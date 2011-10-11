@@ -1,0 +1,75 @@
+/*
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
+#include <jni.h>
+#include "JCCEnv.h"
+#include "java/lang/Object.h"
+#include "java/lang/Class.h"
+#include "java/lang/Byte.h"
+
+namespace java {
+    namespace lang {
+
+        enum {
+            mid__init_,
+            mid_byteValue,
+            max_mid
+        };
+
+        Class *Byte::class$ = NULL;
+        jmethodID *Byte::_mids = NULL;
+
+        jclass Byte::initializeClass()
+        {
+            if (!class$)
+            {
+                jclass cls = env->findClass("java/lang/Byte");
+
+                _mids = new jmethodID[max_mid];
+                _mids[mid__init_] = env->getMethodID(cls, "<init>", "(B)V");
+                _mids[mid_byteValue] =
+                    env->getMethodID(cls, "byteValue", "()B");
+
+                class$ = (Class *) new JObject(cls);
+            }
+
+            return (jclass) class$->this$;
+        }
+
+        Byte::Byte(jbyte b) : Object(env->newObject(initializeClass, &_mids, mid__init_, b)) {
+        }
+
+        jbyte Byte::byteValue() const
+        {
+            return env->callByteMethod(this$, _mids[mid_byteValue]);
+        }
+    }
+}
+
+
+#include "structmember.h"
+#include "functions.h"
+#include "macros.h"
+
+namespace java {
+    namespace lang {
+
+        static PyMethodDef t_Byte__methods_[] = {
+            { NULL, NULL, 0, NULL }
+        };
+
+        DECLARE_TYPE(Byte, t_Byte, Object, java::lang::Byte,
+                     abstract_init, 0, 0, 0, 0, 0);
+    }
+}

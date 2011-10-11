@@ -1,0 +1,116 @@
+
+Version 3.3 -> 3.4.0
+--------------------
+ - added new join contrib module to build
+ - PyLucene built with JCC 2.11
+
+Version 3.2 -> 3.3
+------------------
+ - using Lucene 3.3 sources
+ - adapted to FieldComparator becoming generic
+ - added new grouping contrib module to build
+ - PyLucene built with JCC 2.10
+
+Version 3.1.0 -> 3.2
+--------------------
+ - using Lucene 3.2 sources
+ - PyLucene built with JCC 2.9
+ - rearranged Lucene source checkout tree to reflect new constraints
+
+Version 3.0.0 -> 3.1.0
+----------------------
+ - using Lucene 3.1 sources
+ - improved support for building on Windows with mingw32
+ - added wininst target to Makefile
+ - added port of ICUNormalizer2Filter using C++ ICU's Normalizer2 via PyICU 1.1
+ - added port of ICUFoldingFilter using C++ ICU's Normalizer2 via PyICU 1.1
+ - added port of ICUTransformFilter using C++ ICU's Transliterator via PyICU 1.1
+ - fixed "Lucene in Action" samples left over on old API
+ - improved support for adding optional contrib modules
+ - added --package java.util.regex to wrap constructors on PatternAnalyzer
+ - fixed mansearch.py sample to reflect API changes
+ - PyLucene built with JCC 2.8
+
+Version 2.9.0 -> 3.0.0
+----------------------
+ - unit tests ported to new API
+ - removed InstantiatedIndex contrib from default build
+ - with JCC 2.5's Java generics support, a lot less downcasting needed
+ - Java Lucene sources now included in PyLucene source distribution
+ - "Lucene in Action" samples and tests converted to new Lucene 3.0 API
+ - PyLucene built with JCC 2.5
+
+Version 2.4.1 -> 2.9.0
+----------------------
+ - renamed the Highlighter's SpanScorer class to HighlighterSpanScorer
+ - fixed bug in Makefile's test target which tested installed build
+ - added Mac OS X 10.6 sections to Makefile
+ - added FieldCache.Parser Python extension classes (used in test/test_Sort.py)
+ - added FieldComparator and FieldComparatorSource Python extension classes
+ - added 'memory' contrib module to default build
+ - PyLucene built with JCC 2.4
+
+Version 2.4.0 -> 2.4.1
+----------------------
+ - PyLucene with JCC now a subproject of the Apache Lucene project
+ - documentation moved to http://lucene.apache.org/pylucene
+ - added java.util.Arrays to the build to bridge the Java array/collection gap
+ - added collections.py module with JavaSet class, a Python java.util.Set
+ - fixed bug in PythonQueryParser overriding wrong method (Aaron Lav)
+ - PyLucene built with JCC 2.2
+ - fixed bug with collections.py shadowing Python 2.6's during build
+ - passing strings for byte[] or char[] is no longer supported, use JArray
+ - added copy of PyLucene web site to distribution for offline viewing
+
+Version 2.3.2 -> 2.4.0
+----------------------
+ - fixed Debian bug http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=499599
+ - arrays are now wrapped with JArray() instances instead of expanded into lists
+ - return by value in arrays now supported
+ - PythonTermDocs removed since arrays can now receive values
+ - PythonReader removed since arrays now wrapped
+ - added InstantiatedIndex contrib to build
+ - PyLucene built with JCC 2.1
+
+Version 2.3.1 -> 2.3.2
+----------------------
+ - fixed code generation for clone() broken by finalization proxy work
+ - added 'union' and 'NULL' to the list of reserved words
+ - fixed castCheck() to work with finalization proxies
+ - added scorePayload() delegator to PythonSimilarityDelegator
+ - added support for --install-dir and --use-distutils options
+ - added support for INSTALL_OPT to Makefile
+ - fixed basic samples to initialize VM
+ - added bdist target to Makefile
+
+Version 2.3 -> 2.3.1
+--------------------
+ - fixed bug in JCC using the wrong field modifiers for setter (Bill Janssen)
+ - added missing calls for generating wrappers for ancestors of Exception
+ - added missing call for generating wrappers for String
+ - added PythonTokenizer for implementing complete tokenizers in Python
+
+Version 2.2 -> 2.3
+------------------
+ - PyLucene with JCC introduced
+ - added support for Python 2.3.5
+ - added support for using clone() with extensions
+ - renamed decRef() (and incRef()) native extensions method to pythonDecRef()
+ - improved error reporting a bit
+ - JCC now generates Python properties for get/set/is methods
+ - fixed bug in generated code invoking parent method when inherited from above
+ - added support for building on 64-bit Linux (Ubuntu 7.10)
+ - added support for implicitely iterable Enumeration
+ - added support for --root and --prefix for jcc invocations (Esteve Fernandez)
+ - jcc switched to setuptools by default (and fallback on distutils)
+ - fixed bug http://bugzilla.osafoundation.org/show_bug.cgi?id=11643
+ - added support for automatic boxing of primitives when Object is expected
+ - fixed bug in missing extensions' Iterator and Enumeration methods
+ - added JavaSet.py sample using PythonSet and PythonIterator extensions
+ - added missing LICENSE files
+ - fixed memory leak when calling inherited methods via callSuper()
+ - made finalize() method public on extensions for manually breaking ref cycle
+ - added support for building on Solaris with Sun Studio C++ (Solaris 11)
+ - fixed leak of local refs of jstring when converting to an array of String
+ - automated finalization of extensions via proxy for breaking ref cycle
+ - added Py_CLEAR and Py_VISIT macros for Python 2.3.5 compilation

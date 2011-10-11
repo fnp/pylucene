@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+ 
+        http://www.apache.org/licenses/LICENSE-2.0
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+
+<project name="analyzers" default="default">
+
+  <description>
+    Additional Analyzers
+      - common:	Additional Analyzers
+      - smartcn:	Smart Analyzer for Simplified Chinese Text
+      - stempel:	Algorithmic Stemmer for Polish
+  </description>
+
+  <!-- we dont import contrib-build.xml here, as this file only delegates to the real build files -->
+
+  <target name="common">
+    <ant dir="common" />
+  </target>
+
+  <target name="smartcn">
+    <ant dir="smartcn" />
+  </target>
+
+  <target name="stempel">
+    <ant dir="stempel" />
+  </target>
+
+  <target name="default" depends="common,smartcn,stempel" />
+
+  <target name="clean">
+    <ant dir="common" target="clean" />
+    <ant dir="smartcn" target="clean" />
+    <ant dir="stempel" target="clean" />
+  </target>
+  <target name="compile-core">
+    <ant dir="common" target="compile-core" />
+    <ant dir="smartcn" target="compile-core" />
+    <ant dir="stempel" target="compile-core" />
+  </target>
+  <target name="compile-test">
+    <ant dir="common" target="compile-test" />
+    <ant dir="smartcn" target="compile-test" />
+    <ant dir="stempel" target="compile-test" />
+  </target>
+  <target name="test">
+    <ant dir="common" target="test" />
+    <ant dir="smartcn" target="test" />
+    <ant dir="stempel" target="test" />
+  </target>
+
+  <target name="build-artifacts-and-tests" depends="default,compile-test" />
+
+  <target name="dist-maven" depends="default">
+    <ant dir="common" target="dist-maven" />
+    <ant dir="smartcn" target="dist-maven" />
+    <ant dir="stempel" target="dist-maven" />
+  </target>  	
+
+  <target name="javadocs">
+    <ant dir="common" target="javadocs" />
+    <ant dir="smartcn" target="javadocs" />
+    <ant dir="stempel" target="javadocs" />
+  </target>  	
+
+  <target name="javadocs-index.html">
+    <ant dir="common" target="javadocs-index.html" />
+    <ant dir="smartcn" target="javadocs-index.html" />
+    <ant dir="stempel" target="javadocs-index.html" />
+  </target>
+	
+</project>

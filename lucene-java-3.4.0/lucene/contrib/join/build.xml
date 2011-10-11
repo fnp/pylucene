@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="join" default="default">
+  <description>
+    Queries and collectors for performing joins
+  </description>
+
+  <import file="../contrib-build.xml"/>
+
+  <path id="classpath">
+    <pathelement path="${grouping.jar}"/>
+    <path refid="base.classpath"/>
+  </path>
+
+  <path id="run.classpath">
+    <path refid="classpath"/>
+    <pathelement location="${build.dir}/classes/java"/>
+  </path>
+
+  <property name="maven.dist.dir" location="../dist/maven" />
+
+  <target name="init" depends="contrib-build.init,jar-grouping"/>
+
+  <target name="dist-maven" depends="jar-core,javadocs,contrib-build.dist-maven" />
+</project>

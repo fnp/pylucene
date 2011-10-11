@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8">
+<meta name="Forrest-skin-name" content="pelt">
+<title>JCC Installation Instructions</title>
+<link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+<script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<a href="http://www.apache.org/">apache</a> &gt; <a href="http://lucene.apache.org/">lucene</a><script src="../../skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://lucene.apache.org/"><img class="logoImage" alt="Lucene" src="../../images/lucene_green_150.gif" title="Lucene Description"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href="http://lucene.apache.org/pylucene/"><img class="logoImage" alt="PyLucene" src="../../images/project.png" title="PyLucene Description"></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li>
+<a class="unselected" href="../../index.html">PyLucene</a>
+</li>
+<li class="current">
+<a class="selected" href="../../jcc/index.html">JCC</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_selected_1.1', '../../skin/')" id="menu_selected_1.1Title" class="menutitle" style="background-image: url('../../skin/images/chapter_open.gif');">JCC</div>
+<div id="menu_selected_1.1" class="selectedmenuitemgroup" style="display: block;">
+<div onclick="SwitchMenu('menu_1.1.1', '../../skin/')" id="menu_1.1.1Title" class="menutitle">About</div>
+<div id="menu_1.1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../../jcc/index.html" title="Welcome to JCC">Index</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.1.2', '../../skin/')" id="menu_selected_1.1.2Title" class="menutitle" style="background-image: url('../../skin/images/chapter_open.gif');">Documentation</div>
+<div id="menu_selected_1.1.2" class="selectedmenuitemgroup" style="display: block;">
+<div class="menupage">
+<div class="menupagetitle">Installation</div>
+</div>
+<div class="menuitem">
+<a href="../../jcc/documentation/readme.html">Features</a>
+</div>
+<div class="menuitem">
+<a href="../../jcc/documentation/javadoc/index.html">Javadoc</a>
+</div>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="install.pdf"><img alt="PDF -icon" src="../../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>JCC Installation Instructions</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#sources">Getting JCC's Source Code</a>
+</li>
+<li>
+<a href="#build">Building JCC</a>
+</li>
+<li>
+<a href="#requirements">Requirements</a>
+</li>
+<li>
+<a href="#shared">Shared Mode: Support for the --shared Flag</a>
+</li>
+<li>
+<a href="#mac">Notes for Mac OS X</a>
+</li>
+<li>
+<a href="#linux">Notes for Linux</a>
+</li>
+<li>
+<a href="#solaris">Notes for Solaris</a>
+</li>
+<li>
+<a href="#windows">Notes for Windows</a>
+</li>
+<li>
+<a href="#python">Notes for Python 2.3</a>
+</li>
+</ul>
+</div>
+    
+<a name="N1000D"></a><a name="sources"></a>
+<h2 class="boxed">Getting JCC's Source Code</h2>
+<div class="section">
+<p>
+	JCC's source code is included with PyLucene's. If you've downloaded
+	the PyLucene source code already, JCC's is to be found in
+	the <span class="codefrag">jcc</span> subdirectory.
+      </p>
+<p>
+	To get the JCC source code only from SVN use:<br>
+	
+<span class="codefrag">$ svn co
+	http://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc jcc</span>
+      
+</p>
+</div>
+    
+<a name="N10022"></a><a name="build"></a>
+<h2 class="boxed">Building JCC</h2>
+<div class="section">
+<p>
+	JCC is a Python extension written in Python and C++. It requires a
+	Java Runtime Environment to operate as it uses Java's reflection
+	APIs to do its work. It is built and installed
+	via <span class="codefrag">distutils</span>
+	or <a href="http://pypi.python.org/pypi/setuptools">setuptools</a>.
+      </p>
+<ol>
+	
+<li>
+	  Edit <span class="codefrag">setup.py</span> and review that values in
+	  the <span class="codefrag">INCLUDES</span>, <span class="codefrag">CFLAGS</span>,
+	  <span class="codefrag">DEBUG_CFLAGS</span>, <span class="codefrag">LFLAGS</span>
+	  and <span class="codefrag">JAVAC</span> are correct for your system. These values
+	  are also going to be compiled into JCC's <span class="codefrag">config.py</span>
+	  file and are going to be used by JCC when
+	  invoking <span class="codefrag">distutils</span> or <span class="codefrag">setuptools</span> to
+	  compile extensions it is generating code for.
+	</li>
+	
+<li>
+	  At the command line, enter:
+	  <pre class="code">
+	    $ python setup.py build
+	    $ sudo python setup.py install
+	  </pre>
+	
+</li>
+      
+</ol>
+</div>
+    
+<a name="N1005B"></a><a name="requirements"></a>
+<h2 class="boxed">Requirements</h2>
+<div class="section">
+<p>
+	JCC requires a Java Development Kit to be present. It uses the Java
+	Native Invocation Interface and expects <span class="codefrag">&lt;jni.h&gt;</span>
+	and the Java libraries to be present at build and runtime.
+      </p>
+<p>
+	JCC requires a C++ compiler. A recent C++ compiler for your
+	platform is expected to work as expected.
+      </p>
+</div>
+    
+<a name="N1006B"></a><a name="shared"></a>
+<h2 class="boxed">Shared Mode: Support for the --shared Flag</h2>
+<div class="section">
+<p>
+	JCC includes a small runtime that keeps track of the Java VM and of
+	Java objects escaping it. Because there can be only one Java VM
+	embedded in a given process at a time, the JCC runtime must be
+	compiled as a shared library when more than one JCC-built Python
+	extension is going to be imported into a given Python process.
+      </p>
+<p>
+	Shared mode depends on <span class="codefrag">setuptools</span>' capability of
+	building plain shared libraries (as opposed to shared libraries for
+	Python extensions).
+      </p>
+<p>
+	Currently, shared mode is supported with <span class="codefrag">setuptools
+	0.6c7</span> and above out of the box on Mac OS X and Windows. On
+	Linux, a patch to <span class="codefrag">setuptools</span> needs to be applied
+	first. This patch is included in the JCC source distribution in
+	the <span class="codefrag">jcc/patches</span> directory, <span class="codefrag">patch.43</span>. This
+	patch was submitted to the <span class="codefrag">setuptools</span> project
+	via <a href="http://bugs.python.org/setuptools/issue43">issue
+	43</a>.
+      </p>
+<p>
+	The <span class="codefrag">shared mode disabled</span> error reported during the
+	build of JCC's on Linux contains the exact instructions on how to
+	patch the <span class="codefrag">setuptools</span> installation
+	with <span class="codefrag">patch.43</span> on your system.
+      </p>
+<p>
+	Shared mode is also required when embedding Python in a Java VM as
+	JCC's runtime shared library is used by the JVM to load JCC and
+	bootstrap the Python VM via the JNI.
+      </p>
+<p>
+	When shared mode is not enabled, not supported
+	or <span class="codefrag">distutils</span> is used instead
+	of <span class="codefrag">setuptools</span>, static mode is used instead. The JCC
+	runtime code is statically linked with each JCC-built Python
+	extension and only one such extension can be used in a given Python
+	process at a time.
+      </p>
+<p>
+	As setuptools grows its shared library building capability it is
+	expected that more operating systems should be supported with shared
+	mode in the future.
+      </p>
+<p>
+	Shared mode can be forced off by building JCC with
+	the <span class="codefrag">NO_SHARED</span> environment variable set.
+      </p>
+<p>
+	There are two defaults to consider here:
+      </p>
+<ul>
+	
+<li>
+	  Is JCC built with shared mode support or not ?
+	  <ul>
+	    
+<li>
+	      By default, on Mac OS X and Windows this is the case.
+	    </li>
+	    
+<li>
+	      By default, on Linux, this is the case.
+	      if <span class="codefrag">setuptools</span> is patched.
+	    </li>
+	    
+<li>
+	      On other operating systems shared mode support is off by
+	      default - not supported - because shared mode depends on
+	      <span class="codefrag">setuptools</span>'s capability of building a regular
+	      shared library which is still an experimental feature.
+	    </li>
+	  
+</ul>
+	
+</li>
+	
+<li>
+	  Is a JCC-built Python extension built with shared mode ?<br>
+          By default, no, shared mode is enabled only with
+          the <span class="codefrag">--shared</span> command line argument.
+	</li>
+      
+</ul>
+</div>
+    
+<a name="N100D8"></a><a name="mac"></a>
+<h2 class="boxed">Notes for Mac OS X</h2>
+<div class="section">
+<p>
+	On Mac OS X, Java is installed by Apple's setup as a framework. The
+	values in <span class="codefrag">setup.py</span> for <span class="codefrag">INCLUDES</span>
+	and <span class="codefrag">LFLAGS</span> for <span class="codefrag">darwin</span> should be correct
+	and ready to use.
+      </p>
+<p>
+        However, if you intend to use the 'system' Python from a Java VM
+        on Mac OS X -- Python embedded in Java --
+        you will need to add the flags <span class="codefrag">"-framework", "Python"</span>
+        to the <span class="codefrag">LFLAGS</span> value.
+      </p>
+</div>
+    
+<a name="N100F7"></a><a name="linux"></a>
+<h2 class="boxed">Notes for Linux</h2>
+<div class="section">
+<p>
+	JCC has been built and tested on a variety of Linux distributions,
+	32- and 64-bit. Getting the java configuration correct is important
+	and is done differently for every distribution.<br>
+	For example:
+      </p>
+<ul>
+	
+<li>
+	  on Ubuntu, to install Java 5, these commands may be used:
+	  <pre class="code">
+            $ sudo apt-get install sun-java5-jdk
+            $ sudo update-java-alternatives -s java-1.5.0-sun
+	  </pre>
+	  The samples flags for Linux in JCC's setup.py should be close to
+	  correct.
+	</li>
+	
+<li>
+	  on Gentoo, the <span class="codefrag">java-config</span> utility should be used to
+	  locate, and possibly change, the default java installation.
+	  The sample flags for Linux in JCC's <span class="codefrag">setup.py</span> should
+	  be changed to reflect the root of the Java installation which may
+	  be obtained via:
+	  <pre class="code">
+            $ java-config -O
+	  </pre>
+	
+</li>
+	
+</ul>
+<p>
+	See earlier section about <a href="#shared">Shared Mode</a> for
+	Linux support.
+      </p>
+</div>
+    
+<a name="N10121"></a><a name="solaris"></a>
+<h2 class="boxed">Notes for Solaris</h2>
+<div class="section">
+<p>
+	At this time, JCC has been built and tested only on Solaris 11 with Sun
+	Studio C++ 12, Java 1.6 and Python 2.4.
+      </p>
+<p>
+	Because JCC is written in C++, Python's <span class="codefrag">distutils</span> must
+	be nudged a bit to invoke the correct compiler. Sun Studio's C
+	compiler is called <span class="codefrag">cc</span> while its C++ compiler is
+	called <span class="codefrag">CC</span>. To build JCC, use the following shell
+	command to ensure that the C++ compiler is used:
+      </p>
+<pre class="code">
+	$ CC=CC python setup.py build
+      </pre>
+<p>
+	Shared mode is not currently implemented for
+	Solaris, <span class="codefrag">setuptools</span> needs to be taught how to build
+	plain shared libraries on Solaris first. 
+      </p>
+</div>
+    
+<a name="N10141"></a><a name="windows"></a>
+<h2 class="boxed">Notes for Windows</h2>
+<div class="section">
+<p>
+	At this time, JCC has been built and tested on Win2k and WinXP with
+	a variety of Python and Java versions.
+      </p>
+<ul>
+	
+<li>
+	  Adding the Python directory to <span class="codefrag">PATH</span> is recommended.
+	</li>
+	
+<li>
+	  Adding the Java directories containing the necessary DLLs and to
+	  <span class="codefrag">PATH</span> is a must.
+	</li>
+	
+<li>
+	  Adding the directory containing <span class="codefrag">javac.exe</span>
+	  to <span class="codefrag">PATH</span> is required for shared mode (enabled by
+	  default if <span class="codefrag">setuptools &gt;= 0.6c7</span> is found to be
+	  installed).
+	</li>
+      
+</ul>
+</div>
+    
+<a name="N10166"></a><a name="python"></a>
+<h2 class="boxed">Notes for Python 2.3</h2>
+<div class="section">
+<p>
+	To use JCC with Python 2.3, setuptools is required
+      </p>
+<ol>
+	
+<li>
+	  download <a href="http://pypi.python.org/pypi/setuptools">setuptools</a>.
+	</li>
+	
+<li>
+	  edit the downloaded <span class="codefrag">setuptools</span> egg file to use
+	  python2.3 instead of python2.4.
+	</li>
+	
+<li>
+	  At the command line, run:<br>
+	  
+<span class="codefrag">$ sudo sh setuptools-0.6c7-py2.4.egg</span>
+	
+</li>
+      
+</ol>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2009-2011 <a href="http://www.apache.org/licenses/">The Apache Software Foundation.</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

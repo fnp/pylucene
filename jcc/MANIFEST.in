@@ -1,0 +1,11 @@
+exclude jcc/config.py
+include jcc/patches/patch.*
+recursive-include jcc *.h
+recursive-include _jcc *.h
+recursive-include java *.java
+recursive-include helpers *.py
+include CHANGES
+include DESCRIPTION
+include INSTALL
+include LICENSE
+include NOTICE

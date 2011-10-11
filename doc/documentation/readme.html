@@ -1,0 +1,509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8">
+<meta name="Forrest-skin-name" content="pelt">
+<title>PyLucene Features</title>
+<link type="text/css" href="../skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+<link type="text/css" href="../skin/profile.css" rel="stylesheet">
+<script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="../">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<a href="http://www.apache.org/">apache</a> &gt; <a href="http://lucene.apache.org/">lucene</a><script src="../skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://lucene.apache.org/"><img class="logoImage" alt="Lucene" src="../images/lucene_green_150.gif" title="Lucene Description"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href="http://lucene.apache.org/pylucene/"><img class="logoImage" alt="PyLucene" src="../images/project.png" title="PyLucene Description"></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="selected" href="../index.html">PyLucene</a>
+</li>
+<li>
+<a class="unselected" href="../jcc/index.html">JCC</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_1.1', '../skin/')" id="menu_1.1Title" class="menutitle">About</div>
+<div id="menu_1.1" class="menuitemgroup">
+<div class="menuitem">
+<a href="../index.html" title="Welcome to PyLucene">Index</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_selected_1.2', '../skin/')" id="menu_selected_1.2Title" class="menutitle" style="background-image: url('../skin/images/chapter_open.gif');">Documentation</div>
+<div id="menu_selected_1.2" class="selectedmenuitemgroup" style="display: block;">
+<div class="menuitem">
+<a href="../documentation/install.html">Installation</a>
+</div>
+<div class="menupage">
+<div class="menupagetitle">Features</div>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.3', '../skin/')" id="menu_1.3Title" class="menutitle">Resources</div>
+<div id="menu_1.3" class="menuitemgroup">
+<div class="menuitem">
+<a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">Releases</a>
+</div>
+<div class="menuitem">
+<a href="../resources/version_control.html">Source Code</a>
+</div>
+<div class="menuitem">
+<a href="../resources/mailing_lists.html">Mailing Lists</a>
+</div>
+<div class="menuitem">
+<a href="http://issues.apache.org/jira/browse/PyLucene">Issue Tracking</a>
+</div>
+</div>
+<div id="credit"></div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="../skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="readme.pdf"><img alt="PDF -icon" src="../skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>PyLucene Features</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#install">Installing PyLucene</a>
+</li>
+<li>
+<a href="#api">API documentation</a>
+<ul class="minitoc">
+<li>
+<a href="#samples">Samples</a>
+</li>
+<li>
+<a href="#threading">Threading support with attachCurrentThread</a>
+</li>
+<li>
+<a href="#exceptions">Exception handling with lucene.JavaError</a>
+</li>
+<li>
+<a href="#arrays">Handling Java arrays</a>
+</li>
+<li>
+<a href="#differences">Differences between the Java Lucene and PyLucene APIs</a>
+</li>
+<li>
+<a href="#python">Pythonic extensions to the Java Lucene APIs</a>
+</li>
+<li>
+<a href="#extensions">Extending Java Lucene classes from Python</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+    
+<div class="warning">
+<div class="label">Warning</div>
+<div class="content">
+      Before calling any PyLucene API that requires the Java VM, start it by
+      calling <span class="codefrag">initVM(classpath, ...)</span>. More about this function
+      in <a href="../jcc/documentation/readme.html">here</a>.
+    </div>
+</div>
+    
+<a name="N10017"></a><a name="install"></a>
+<h2 class="boxed">Installing PyLucene</h2>
+<div class="section">
+<p>
+        PyLucene is a Python extension built with 
+        <a href="../jcc/index.html">JCC</a>.
+      </p>
+<p>
+        To build PyLucene, JCC needs to be built first. Sources for JCC are
+        included with the PyLucene sources. Instructions for building and
+        installing JCC are <a href="../jcc/documentation/install.html">here</a>. 
+      </p>
+<p>
+        Instruction for building PyLucene
+        are <a href="../documentation/install.html">here</a>.
+      </p>
+</div>
+    
+<a name="N10033"></a><a name="api"></a>
+<h2 class="boxed">API documentation</h2>
+<div class="section">
+<p>
+        PyLucene is closely tracking Java Lucene releases. It intends to
+        supports the entire Lucene API.
+      </p>
+<p>
+        PyLucene also includes a number of Lucene contrib packages: the
+        Snowball analyzer and stemmers, the highlighter package, analyzers
+        for other languages than english, regular expression queries, 
+        specialized queries such as 'more like this' and more.
+      </p>
+<p>
+        This document only covers the pythonic extensions to Lucene offered
+        by PyLucene as well as some differences between the Java and Python
+        APIs. For the documentation on Java Lucene APIs,
+        see <a href="http://lucene.apache.org/java/docs/api/index.html">here</a>.
+      </p>
+<p>
+        To help with debugging and to support some Lucene APIs, PyLucene also
+        exposes some Java runtime APIs.
+      </p>
+<a name="N10049"></a><a name="samples"></a>
+<h3 class="boxed">Samples</h3>
+<p>
+          The best way to learn PyLucene is to look at the many samples
+          included with the PyLucene source release or on the web at:
+        </p>
+<ul>
+          
+<li>
+            
+<a href="http://svn.apache.org/viewcvs.cgi/lucene/pylucene/trunk/samples">http://svn.apache.org/viewcvs.cgi/lucene/pylucene/trunk/samples</a>
+          
+</li>
+          
+<li>
+            
+<a href="http://svn.apache.org/viewcvs.cgi/lucene/pylucene/trunk/samples/LuceneInAction">http://svn.apache.org/viewcvs.cgi/lucene/pylucene/trunk/samples/LuceneInAction</a>
+          
+</li>
+        
+</ul>
+<p>
+          A large number of samples are shipped with PyLucene. Most notably,
+          all the samples published in
+          the <a href="http://www.manning.com/hatcher2"><em>Lucene in
+          Action</em></a> book that did not depend on a third party Java
+          library for which there was no obvious Python equivalent were
+          ported to Python and PyLucene.
+        </p>
+<p>
+          
+<em>Lucene in Action</em> is a great companion to learning
+          Lucene. Having all the samples available in Python should make it
+          even easier for Python developers.
+        </p>
+<p>
+          
+<em>Lucene in Action</em> was written by Erik Hatcher and Otis
+          Gospodnetic, both part of the Java Lucene development team, and is
+          available from
+          <a href="http://www.manning.com/hatcher2">Manning Publications</a>.
+        </p>
+<a name="N1007C"></a><a name="threading"></a>
+<h3 class="boxed">Threading support with attachCurrentThread</h3>
+<p>
+          Before PyLucene APIs can be used from a thread other than the main
+          thread that was not created by the Java Runtime, the
+          <span class="codefrag">attachCurrentThread()</span> method must be called on the
+          <span class="codefrag">JCCEnv</span> object returned by the <span class="codefrag">initVM()</span>
+          or <span class="codefrag">getVMEnv()</span> functions.
+        </p>
+<a name="N10092"></a><a name="exceptions"></a>
+<h3 class="boxed">Exception handling with lucene.JavaError</h3>
+<p>
+          Java exceptions are caught at the language barrier and reported to
+          Python by raising a JavaError instance whose args tuple contains the
+          actual Java Exception instance.
+        </p>
+<a name="N1009C"></a><a name="arrays"></a>
+<h3 class="boxed">Handling Java arrays</h3>
+<p>
+          Java arrays are returned to Python in a <span class="codefrag">JArray</span>
+          wrapper instance that implements the Python sequence protocol. It
+          is possible to change array elements but not to change the array
+          size.
+        </p>
+<p>
+          A few Lucene APIs take array arguments and expect values to be
+          returned in them. To call such an API and be able to retrieve the
+          array values after the call, a Java array needs to instantiated
+          first.<br>
+          For example, accessing termDocs:
+        </p>
+<pre class="code">
+          termDocs = reader.termDocs(Term("isbn", isbn))
+          docs = JArray('int')(1)   # allocate an int[1] array
+          freq = JArray('int')(1)   # allocate an int[1] array
+          if termDocs.read(docs, freq) == 1:
+              bits.set(docs[0])     # access the array's first element
+        </pre>
+<p>
+          In addition to <span class="codefrag">'int'</span>, the <span class="codefrag">'JArray'</span>
+          function accepts <span class="codefrag">'object'</span>, <span class="codefrag">'string'</span>,
+          <span class="codefrag">'bool'</span>, <span class="codefrag">'byte'</span>, <span class="codefrag">'char'</span>,
+          <span class="codefrag">'double'</span>, <span class="codefrag">'float'</span>, <span class="codefrag">'long'</span>
+          and <span class="codefrag">'short'</span> to create an array of the corresponding
+          type. The <span class="codefrag">JArray('object')</span> constructor takes a second
+          argument denoting the class of the object elements. This argument
+          is optional and defaults to Object. 
+        </p>
+<p>
+          To convert a char array to a Python string use a 
+          <span class="codefrag">''.join(array)</span> construct.
+        </p>
+<p>
+          Instead of an integer denoting the size of the desired Java array,
+          a sequence of objects of the expected element type may be passed
+          in to the array constructor.<br>
+          For example:
+        </p>
+<pre class="code">
+          # creating a Java array of double from the [1.5, 2.5] list
+          JArray('double')([1.5, 2.5])
+        </pre>
+<p>
+          All methods that expect an array also accept a sequence of Python
+          objects of the expected element type. If no values are expected
+          from the array arguments after the call, it is hence not necessary
+          to instantiate a Java array to make such calls.
+        </p>
+<p>
+          See <a href="../jcc/documentation/readme.html">JCC</a> for more
+          information about handling arrays. 
+        </p>
+<a name="N100F2"></a><a name="differences"></a>
+<h3 class="boxed">Differences between the Java Lucene and PyLucene APIs</h3>
+<ul>
+          
+<li>
+            The PyLucene API exposes all Java Lucene classes in a flat namespace
+            in the PyLucene module. For example, the Java import
+            statement <span class="codefrag">import
+            org.apache.lucene.index.IndexReader;</span> corresponds to the
+            Python import statement <span class="codefrag">from lucene import
+            IndexReader</span>
+          
+</li>
+          
+<li>
+            Downcasting is a common operation in Java but not a concept in
+            Python. Because the wrapper objects implementing exactly the
+            APIs of the declared type of the wrapped object, all classes
+            implement two class methods called instance_ and cast_ that
+            verify and cast an instance respectively.
+          </li>
+        
+</ul>
+<a name="N10108"></a><a name="python"></a>
+<h3 class="boxed">Pythonic extensions to the Java Lucene APIs</h3>
+<p>
+          Java is a very verbose language. Python, on the other hand, offers
+          many syntactically attractive constructs for iteration, property
+          access, etc... As the Java Lucene samples from the <em>Lucene in
+          Action</em> book were ported to Python, PyLucene received a number
+          of pythonic extensions listed here:
+        </p>
+<ul>
+          
+<li>
+            Iterating search hits is a very common operation. Hits instances
+            are iterable in Python. Two values are returned for each
+            iteration, the zero-based number of the document in the Hits
+            instance and the document instance itself.<br>
+            The Java loop:
+            <pre class="code">
+              for (int i = 0; i &lt; hits.length(); i++) {
+                  Document doc = hits.doc(i);
+                  System.out.println(hits.score(i) + " : " + doc.get("title"));
+              }
+            </pre>
+            can be written in Python:
+            <pre class="code">
+             for hit in hits:
+                 hit = Hit.cast_(hit)
+                 print hit.getScore(), ':', hit.getDocument['title']
+             </pre>
+            if hit.iterator()'s next() method were declared to return
+            <span class="codefrag">Hit</span> instead of <span class="codefrag">Object</span>, the above
+            cast_() call would not be unnecessary.<br>
+            The same java loop can also be written:
+            <pre class="code">
+              for i xrange(len(hits)):
+                  print hits.score(i), ':', hits[i]['title']
+            </pre>
+          
+</li>
+          
+<li>
+            Hits instances partially implement the Python 'sequence' 
+            protocol.<br>
+            The Java expressions:
+            <pre class="code">
+              hits.length()
+              doc = hits.get(i)
+            </pre>
+            are better written in Python:
+            <pre class="code">
+              len(hits)
+              doc = hits[i]
+            </pre>
+          
+</li>
+          
+<li>
+            Document instances have fields whose values can be accessed 
+            through the mapping protocol.<br>
+            The Java expression:
+            <pre class="code">
+              doc.get("title")
+            </pre>
+            is better written in Python:
+            <pre class="code">
+              doc['title']
+            </pre>
+          
+</li>
+          
+<li>
+            Document instances can be iterated over for their fields.<br>
+            The Java loop:
+            <pre class="code">
+              Enumeration fields = doc.getFields();
+              while (fields.hasMoreElements()) {
+                  Field field = (Field) fields.nextElement();
+                  ...
+              }
+            </pre>
+            is better written in Python:
+            <pre class="code">
+              for field in doc.getFields():
+                  field = Field.cast_(field)
+                  ...
+            </pre>
+            Once JCC heeds Java 1.5 type parameters and once Java Lucene
+            makes use of them, such casting should become unncessary.
+          </li>
+        
+</ul>
+<a name="N10158"></a><a name="extensions"></a>
+<h3 class="boxed">Extending Java Lucene classes from Python</h3>
+<p>
+          Many areas of the Lucene API expect the programmer to provide
+          their own implementation or specialization of a feature where
+          the default is inappropriate. For example, text analyzers and
+          tokenizers are an area where many parameters and environmental
+          or cultural factors are calling for customization.
+        </p>
+<p>
+          PyLucene enables this by providing Java extension points listed
+          below that serve as proxies for Java to call back into the
+          Python implementations of these customizations.
+        </p>
+<p>
+          These extension points are simple Java classes that JCC
+          generates the native C++ implementations for. It is easy to add
+          more such extensions classes into the 'java' directory of the
+          PyLucene source tree.
+        </p>
+<p>
+          To learn more about this topic, please refer to the JCC
+          <a href="../jcc/documentation/readme.html">documentation</a>.
+        </p>
+<p>
+          Please refer to the classes in the 'java' tree for currently
+          available extension points. Examples of uses of these extension
+          points are to be found in PyLucene's unit tests and <em>Lucene
+          in
+          Action</em> <a href="http://svn.apache.org/viewcvs.cgi/lucene/pylucene/trunk/samples/LuceneInAction">samples</a>.
+        </p>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2009-2011 <a href="http://www.apache.org/licenses/">The Apache Software Foundation.</a>
+</div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

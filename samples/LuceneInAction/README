@@ -1,0 +1,33 @@
+
+This directory contains most of the sample code from the "Lucene In Action"
+book by Erik Hatcher and Otis Gospodnetic. To purchase an electronic or
+printed copy of the book, visit http://www.manning.com/hatcher2
+
+The samples that were not ported depend on some third party java code not
+available to PyLucene or is related to remote searching which is not
+supported by PyLucene at this time.
+
+R E Q U I R E M E N T S
+-----------------------
+  * python 2.4
+  * PyLucene 2.0+
+  * for the FileIndexer.py sample, some text extraction is handled by third
+    party programs invoked as a sub-process. The code assumes that these
+    programs are on the PATH:
+    - PDF files: 
+      pdftotext and pdfinfo, both available from http://www.foolabs.com/xpdf
+    - MS Word files: antiword
+      antiword available from http://www.winfield.demon.nl
+    - RTF files:
+      not implemented
+
+I N S T A L L A T I O N
+-----------------------
+Before any of the samples can be run, some Lucene indexes need to be
+created by running 'index.py':
+   - python index.py
+
+R U N N I N G
+-------------
+Each of the files in this directory should be run from the command line:
+   - python BooleanQueryTest.py

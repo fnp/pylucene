@@ -1,0 +1,65 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+
+Contains the base classes used to configure the query processing
+
+<h2>Query Configuration Interfaces</h2>
+<p>
+The package <tt>org.apache.lucene.queryParser.core.config</tt> contains query configuration handler
+abstract class that all config handlers should extend.
+</p>
+<p>
+See {@link org.apache.lucene.queryParser.standard.config.StandardQueryConfigHandler} for a reference
+implementation.
+</p>
+<p>
+The {@link org.apache.lucene.queryParser.core.config.QueryConfigHandler} and {@link org.apache.lucene.queryParser.core.config.FieldConfig} are used in the processors to access config
+information in a flexible and independent way.
+See {@link org.apache.lucene.queryParser.standard.processors.ParametricRangeQueryNodeProcessor} for a 
+reference implementation.
+</p>
+<p>
+Since version 3.4, the configuration API has changed. It no longer uses {@link org.apache.lucene.util.Attribute} objects to configure
+a query parser. Instead, it uses {@link org.apache.lucene.queryParser.core.config.ConfigurationKey} objects to set any configuration
+to a {@link org.apache.lucene.queryParser.core.config.QueryConfigHandler}. For now, both configuration APIs are working, however, 
+they cannot be used at the same time. So if you start moving your code to the new API, move it completely or keep using the old API.
+</p>
+<p>
+Here is an example about how the new configuration API works:
+ <blockquote> 
+ <pre>
+
+...
+// this constant will be the key to get and set your configuration. This should be unique in your application.
+final public static {@link org.apache.lucene.queryParser.core.config.ConfigurationKey}<{@link java.text.NumberFormat}> MY_CONFIG = {@link org.apache.lucene.queryParser.core.config.ConfigurationKey}.newInstance();
+...
+// make sure to use your unique key instance to set and get your configuration
+queryConfigHandler.set(MY_CONFIG, {@link java.text.NumberFormat}.getInstance());
+{@link java.text.NumberFormat} numberFormat = queryConfigHandler.get(MY_CONFIG);
+...
+ </blockquote> 
+ </pre>
+</p>
+</body>
+</html
+

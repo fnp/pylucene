@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="Apache Forrest" name="Generator">
+<meta name="Forrest-version" content="0.8">
+<meta name="Forrest-skin-name" content="pelt">
+<title>Welcome to PyLucene</title>
+<link type="text/css" href="skin/basic.css" rel="stylesheet">
+<link media="screen" type="text/css" href="skin/screen.css" rel="stylesheet">
+<link media="print" type="text/css" href="skin/print.css" rel="stylesheet">
+<link type="text/css" href="skin/profile.css" rel="stylesheet">
+<script src="skin/getBlank.js" language="javascript" type="text/javascript"></script><script src="skin/getMenu.js" language="javascript" type="text/javascript"></script><script src="skin/fontsize.js" language="javascript" type="text/javascript"></script>
+<link rel="shortcut icon" href="">
+</head>
+<body onload="init()">
+<script type="text/javascript">ndeSetTextSize();</script>
+<div id="top">
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+<a href="http://www.apache.org/">apache</a> &gt; <a href="http://lucene.apache.org/">lucene</a><script src="skin/breadcrumbs.js" language="JavaScript" type="text/javascript"></script>
+</div>
+<!--+
+    |header
+    +-->
+<div class="header">
+<!--+
+    |start group logo
+    +-->
+<div class="grouplogo">
+<a href="http://lucene.apache.org/"><img class="logoImage" alt="Lucene" src="images/lucene_green_150.gif" title="Lucene Description"></a>
+</div>
+<!--+
+    |end group logo
+    +-->
+<!--+
+    |start Project Logo
+    +-->
+<div class="projectlogoA1">
+<a href="http://lucene.apache.org/pylucene/"><img class="logoImage" alt="PyLucene" src="images/project.png" title="PyLucene Description"></a>
+</div>
+<!--+
+    |end Project Logo
+    +-->
+<!--+
+    |start Tabs
+    +-->
+<ul id="tabs">
+<li class="current">
+<a class="selected" href="index.html">PyLucene</a>
+</li>
+<li>
+<a class="unselected" href="jcc/index.html">JCC</a>
+</li>
+</ul>
+<!--+
+    |end Tabs
+    +-->
+</div>
+</div>
+<div id="main">
+<div id="publishedStrip">
+<!--+
+    |start Subtabs
+    +-->
+<div id="level2tabs"></div>
+<!--+
+    |end Endtabs
+    +-->
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<!--+
+    |breadtrail
+    +-->
+<div class="breadtrail">
+
+             &nbsp;
+           </div>
+<!--+
+    |start Menu, mainarea
+    +-->
+<!--+
+    |start Menu
+    +-->
+<div id="menu">
+<div onclick="SwitchMenu('menu_selected_1.1', 'skin/')" id="menu_selected_1.1Title" class="menutitle" style="background-image: url('skin/images/chapter_open.gif');">About</div>
+<div id="menu_selected_1.1" class="selectedmenuitemgroup" style="display: block;">
+<div class="menupage">
+<div class="menupagetitle">Index</div>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.2', 'skin/')" id="menu_1.2Title" class="menutitle">Documentation</div>
+<div id="menu_1.2" class="menuitemgroup">
+<div class="menuitem">
+<a href="documentation/install.html">Installation</a>
+</div>
+<div class="menuitem">
+<a href="documentation/readme.html">Features</a>
+</div>
+</div>
+<div onclick="SwitchMenu('menu_1.3', 'skin/')" id="menu_1.3Title" class="menutitle">Resources</div>
+<div id="menu_1.3" class="menuitemgroup">
+<div class="menuitem">
+<a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">Releases</a>
+</div>
+<div class="menuitem">
+<a href="resources/version_control.html">Source Code</a>
+</div>
+<div class="menuitem">
+<a href="resources/mailing_lists.html">Mailing Lists</a>
+</div>
+<div class="menuitem">
+<a href="http://issues.apache.org/jira/browse/PyLucene">Issue Tracking</a>
+</div>
+</div>
+<div id="credit">
+<hr>
+<a href="http://forrest.apache.org/"><img border="0" title="Built with Apache Forrest" alt="Built with Apache Forrest - logo" src="images/built-with-forrest-button.png" style="width: 88px;height: 31px;"></a>
+</div>
+<div id="roundbottom">
+<img style="display: none" class="corner" height="15" width="15" alt="" src="skin/images/rc-b-l-15-1body-2menu-3menu.png"></div>
+<!--+
+  |alternative credits
+  +-->
+<div id="credit2"></div>
+</div>
+<!--+
+    |end Menu
+    +-->
+<!--+
+    |start content
+    +-->
+<div id="content">
+<div title="Portable Document Format" class="pdflink">
+<a class="dida" href="index.pdf"><img alt="PDF -icon" src="skin/images/pdfdoc.gif" class="skin"><br>
+        PDF</a>
+</div>
+<h1>Welcome to PyLucene</h1>
+<div id="minitoc-area">
+<ul class="minitoc">
+<li>
+<a href="#introduction">What is PyLucene ?</a>
+</li>
+<li>
+<a href="#requirements">Requirements</a>
+</li>
+<li>
+<a href="#news">News</a>
+<ul class="minitoc">
+<li>
+<a href="#news20110723">23 Jul 2011 - PyLucene 3.3-3 available</a>
+</li>
+<li>
+<a href="#news20110609">09 Jun 2011 - PyLucene 3.2.0-1 available</a>
+</li>
+<li>
+<a href="#news20110407">04 Apr 2011 - PyLucene 3.1.0-1 available</a>
+</li>
+<li>
+<a href="#news20101216">16 Dec 2010 - PyLucene 3.0.3-1 and 2.9.4-1 available</a>
+</li>
+<li>
+<a href="#news20100702">02 Jul 2010 - PyLucene 3.0.2-1 and 2.9.3-1 available</a>
+</li>
+<li>
+<a href="#news20100304">03 Mar 2010 - PyLucene 3.0.1-1 and 2.9.2-1 available</a>
+</li>
+<li>
+<a href="#news20091208">08 Dec 2009 - PyLucene 3.0.0-1 available</a>
+</li>
+<li>
+<a href="#news20091110">10 Nov 2009 - PyLucene 2.9.1-1 available</a>
+</li>
+<li>
+<a href="#news20091013">13 Oct 2009 - PyLucene 2.9.0-1 available</a>
+</li>
+<li>
+<a href="#news20090403">03 Apr 2009 - PyLucene 2.4.1-1 available</a>
+</li>
+<li>
+<a href="#news20090108">08 Jan 2009 - PyLucene joins Apache Lucene as a Subproject</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+    
+<a name="N1000D"></a><a name="introduction"></a>
+<h2 class="boxed">What is PyLucene ?</h2>
+<div class="section">
+<p>
+	PyLucene is a <a href="http://www.python.org">Python</a> extension
+	for accessing
+	Java <a href="http://lucene.apache.org/java/">Lucene</a>. Its goal
+	is to allow you to use Lucene's text indexing and searching
+	capabilities from Python. It is API compatible with the latest
+	version of Java Lucene, version 3.2 as of June 9th, 2011.
+      </p>
+<p>
+	PyLucene is not a Lucene port but a Python wrapper around
+	Java Lucene. PyLucene embeds a Java VM with Lucene into a Python
+	process. The PyLucene Python extension, a Python module called
+	<span class="codefrag">lucene</span>, is machine-generated by JCC.
+      </p>
+<p>
+	PyLucene is built with <a href="jcc/index.html">JCC</a>, a C++
+	code generator that makes it possible to call into Java classes from
+	Python via Java's Native Invocation Interface (JNI). Sources for JCC
+	are included with the PyLucene sources.
+      </p>
+<p>
+	See <a href="documentation/readme.html">here</a> for more
+	information and documentation about PyLucene.
+      </p>
+</div>
+    
+<a name="N10033"></a><a name="requirements"></a>
+<h2 class="boxed">Requirements</h2>
+<div class="section">
+<p>
+	PyLucene is supported on Mac OS X, Linux, Solaris and Windows.
+      </p>
+<p>
+	PyLucene requires Python version 2.x (x &gt;= 3.5) and Java version 1.x
+	(x &gt;= 4). Building PyLucene requires GNU Make, a recent version
+	of <a href="http://ant.apache.org">Ant</a> capable of building
+	Java <a href="http://lucene.apache.org/java/">Lucene</a> and a C++
+	compiler. Use
+	of <a href="http://pypi.python.org/pypi/setuptools">setuptools</a>
+	is recommended. 
+      </p>
+<p>
+	See the JCC <a href="jcc/documentation/install.html">installation
+	instructions</a> for more information about building JCC from sources.
+      </p>
+<p>
+	See the PyLucene <a href="documentation/install.html">installation
+	instructions</a> for more information about building PyLucene from
+	sources.
+      </p>
+</div>
+    
+<a name="N1005A"></a><a name="news"></a>
+<h2 class="boxed">News</h2>
+<div class="section">
+<a name="N10060"></a><a name="news20110723"></a>
+<h3 class="boxed">23 Jul 2011 - PyLucene 3.3-3 available</h3>
+<p>
+	  This release tracks Lucene Core's recent 3.3 <a href="http://lucene.apache.org/#1+July+2011+-+Lucene+Core+3.3+and+Solr+3.3+Available">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_3/CHANGES">PyLucene 3.3 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc/CHANGES">JCC 2.10 CHANGES</a> for details.<br>
+	
+</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10082"></a><a name="news20110609"></a>
+<h3 class="boxed">09 Jun 2011 - PyLucene 3.2.0-1 available</h3>
+<p>
+	  This release tracks Lucene Core's recent 3.2 <a href="http://lucene.apache.org/java/docs/index.html#4+June+2011+-+Lucene+Core+3.2">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_2_0/CHANGES">PyLucene 3.2.0 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc/CHANGES">JCC 2.9 CHANGES</a> for details.<br>
+	
+</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N100A4"></a><a name="news20110407"></a>
+<h3 class="boxed">04 Apr 2011 - PyLucene 3.1.0-1 available</h3>
+<p>
+	  This release tracks Lucene Core's recent 3.1 <a href="http://lucene.apache.org/java/docs/index.html#31+March+2011+-+Lucene+Core+3.1">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_1_0/CHANGES">PyLucene 3.1.0 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc/CHANGES">JCC 2.8 CHANGES</a> for details.<br>
+	
+</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N100C6"></a><a name="news20101216"></a>
+<h3 class="boxed">16 Dec 2010 - PyLucene 3.0.3-1 and 2.9.4-1 available</h3>
+<p>
+	  These releases track Lucene Java's recent 2.9.4 and 3.0.3 <a href="http://lucene.apache.org/java/docs/index.html#3+December+2010+-+Lucene+Java+3.0.3+and+2.9.4+available">releases</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_3/CHANGES">PyLucene 3.0.3 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/trunk/jcc/CHANGES">JCC 2.7 CHANGES</a> for details.<br>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_4/CHANGES">PyLucene 2.9.4 CHANGES</a> for details.
+	</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N100EC"></a><a name="news20100702"></a>
+<h3 class="boxed">02 Jul 2010 - PyLucene 3.0.2-1 and 2.9.3-1 available</h3>
+<p>
+	  These releases track Lucene Java's recent 2.9.3 and 3.0.2 <a href="http://lucene.apache.org/java/docs/index.html#18+June+2010+-+Lucene+Java+3.0.2+and+2.9.3+available">releases</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_2/CHANGES">PyLucene 3.0.2 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_2/jcc/CHANGES">JCC 2.6 CHANGES</a> for details.<br>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_3/CHANGES">PyLucene 2.9.3 CHANGES</a> for details.
+	</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10112"></a><a name="news20100304"></a>
+<h3 class="boxed">03 Mar 2010 - PyLucene 3.0.1-1 and 2.9.2-1 available</h3>
+<p>
+	  These releases track Lucene Java's recent 2.9.2 and 3.0.1 <a href="http://lucene.apache.org/java/docs/index.html#26+February+2010+-+Lucene+Java+3.0.1+and+2.9.2+available">releases</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_1/CHANGES">PyLucene 3.0.1 CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_1/jcc/CHANGES">JCC 2.5.1 CHANGES</a> for details.<br>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_2/CHANGES">PyLucene 2.9.2 CHANGES</a> for details.
+	</p>
+<p>
+	  Source distributions are available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10138"></a><a name="news20091208"></a>
+<h3 class="boxed">08 Dec 2009 - PyLucene 3.0.0-1 available</h3>
+<p>
+	  This release tracks Lucene Java's recent 3.0.0 <a href="http://lucene.apache.org/java/docs/index.html#25+November+2009+-+Lucene+Java+3.0.0+available">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_0/CHANGES">PyLucene CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_3_0_0/jcc/CHANGES">JCC CHANGES</a> for details.
+	</p>
+<p>
+	  A source distribution is available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10158"></a><a name="news20091110"></a>
+<h3 class="boxed">10 Nov 2009 - PyLucene 2.9.1-1 available</h3>
+<p>
+	  This release tracks Lucene Java's recent 2.9.1 <a href="http://lucene.apache.org/java/docs/index.html#6+November+2009+-+Lucene+Java+2.9.1+available">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_1/CHANGES">PyLucene CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_1/jcc/CHANGES">JCC CHANGES</a> for details.
+	</p>
+<p>
+	  A source distribution is available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10178"></a><a name="news20091013"></a>
+<h3 class="boxed">13 Oct 2009 - PyLucene 2.9.0-1 available</h3>
+<p>
+	  This release tracks Lucene Java's recent 2.9.0 <a href="http://lucene.apache.org/java/docs/index.html#25+September+2009+-+Lucene+Java+2.9.0+available">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_0/CHANGES">PyLucene CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_9_0/jcc/CHANGES">JCC CHANGES</a> for details.
+	</p>
+<p>
+	  A source distribution is available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N10198"></a><a name="news20090403"></a>
+<h3 class="boxed">03 Apr 2009 - PyLucene 2.4.1-1 available</h3>
+<p>
+	  This release tracks Lucene Java's recent 2.4.1 <a href="http://lucene.apache.org/java/docs/index.html#9+March+2009+-+Lucene+Java+2.4.1+available">release</a>.
+	</p>
+<p>
+	  See <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_4_1/CHANGES">PyLucene CHANGES</a> and <a href="http://svn.apache.org/repos/asf/lucene/pylucene/tags/pylucene_2_4_1/jcc/CHANGES">JCC CHANGES</a> for details.
+	</p>
+<p>
+	  A source distribution is available <a href="http://www.apache.org/dyn/closer.cgi/lucene/pylucene/">here</a>.
+	</p>
+<a name="N101B8"></a><a name="news20090108"></a>
+<h3 class="boxed">08 Jan 2009 - PyLucene joins Apache Lucene as a Subproject</h3>
+<p>
+	  The Lucene PMC is pleased to announce the arrival of PyLucene as a
+	  Lucene subproject. PyLucene was previously hosted at the Open
+	  Source Applications Foundation since its inception in early 2004.
+	</p>
+</div>
+  
+</div>
+<!--+
+    |end content
+    +-->
+<div class="clearboth">&nbsp;</div>
+</div>
+<div id="footer">
+<!--+
+    |start bottomstrip
+    +-->
+<div class="lastmodified">
+<script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+</div>
+<div class="copyright">
+        Copyright &copy;
+         2009-2011 <a href="http://www.apache.org/licenses/">The Apache Software Foundation.</a>
+</div>
+<div id="logos"></div>
+<!--+
+    |end bottomstrip
+    +-->
+</div>
+</body>
+</html>

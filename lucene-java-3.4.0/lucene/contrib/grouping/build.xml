@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<project name="grouping" default="default">
+    <description>
+        Collectors for grouping search results
+    </description>
+
+    <import file="../contrib-build.xml"/>
+</project>
