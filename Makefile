@@ -111,7 +111,7 @@ LUCENE=$(LUCENE_SRC)/lucene
 PREFIX_PYTHON=$(VIRTUAL_ENV)
 ANT=ant
 PYTHON=$(PREFIX_PYTHON)/bin/python
-JCC=$(PYTHON) -m jcc #--shared
+JCC=$(PYTHON) -m jcc --shared
 NUM_FILES=3
 
 # FreeBSD
