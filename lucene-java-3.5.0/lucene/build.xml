@@ -1,0 +1,667 @@
+<?xml version="1.0"?>
+
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+ 
+        http://www.apache.org/licenses/LICENSE-2.0
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+
+<project name="core" default="default" basedir="."
+         xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <property name="junit.includes" value="**/Test*.java"/>
+
+  <import file="common-build.xml"/>
+
+  <!-- Build classpath -->
+  <path id="classpath">
+    <pathelement location="${build.dir}/classes/java"/>
+  </path>
+
+  <path id="demo.classpath">
+    <path refid="classpath"/>
+    <pathelement location="${build.dir}/classes/demo"/>
+  </path>
+
+  <path id="test.classpath">
+  	<path refid="classpath"/>
+    <path refid="junit-path"/>
+    <pathelement location="${build.dir}/classes/test-framework"/>
+    <pathelement location="${build.dir}/classes/test"/>
+  </path>
+
+  <path id="junit.classpath">
+    <path refid="junit-path"/>
+    <pathelement location="${build.dir}/classes/test-framework"/>
+    <pathelement location="${build.dir}/classes/test"/>
+    <pathelement location="${build.dir}/classes/java"/>
+    <pathelement path="${java.class.path}"/>
+  </path>
+
+  <patternset id="binary.build.dist.patterns"
+              includes="${final.name}*.jar,lucene-test-framework*.jar,docs/,contrib/*/*.jar,contrib/*/*.war, contrib/*/*/*.jar"
+              excludes="*-src.jar"
+  />
+  <patternset id="binary.root.dist.patterns"
+              includes="CHANGES.txt,LICENSE.txt,NOTICE.txt,README.txt,MIGRATE.txt,JRE_VERSION_MIGRATION.txt,contrib/**/README*,**/CHANGES.txt,contrib/**/*.sh contrib/**/docs/ contrib/xml-query-parser/*.dtd,lib/*.jar,lib/*LICENSE*.txt,lib/*NOTICE*.txt,contrib/*/lib/*.jar,contrib/*/lib/*LICENSE*.txt,contrib/*/lib/*NOTICE*.txt"
+  />
+
+
+  <!-- ================================================================== -->
+  <!-- Prepares the build directory                                       -->
+  <!-- ================================================================== -->
+
+  <target name="test-core" depends="common.test"
+          description="Runs unit tests for the core Lucene code"
+  />
+  <target name="test" depends="test-core, test-contrib, test-backwards"
+          description="Runs all unit tests (core, contrib and back-compat)"
+  />
+
+  <path id="backwards.test.compile.classpath">
+    <path refid="junit-path"/>
+    <path refid="ant-path"/>
+    <fileset dir="${backwards.dir}/lib">
+      <include name="lucene-core*.jar"/>
+    </fileset>
+  </path>
+	
+  <path id="backwards.junit.classpath">
+    <path refid="junit-path"/>
+    <path refid="classpath"/>
+    <pathelement location="${build.dir.backwards}/classes/test"/>
+    <pathelement path="${java.class.path}"/>
+  </path>
+
+  <!-- remove this -->
+  <target name="test-tag" depends="test-backwards" description="deprecated"/>
+  
+  <target name="compile-backwards" depends="compile-core"
+  	description="Runs tests of a previous Lucene version.">
+    <sequential>
+      <mkdir dir="${build.dir.backwards}"/>	  
+          
+      <!-- compile branch tests against previous version JAR file -->	
+      <compile-test-macro srcdir="${backwards.dir}/src/test-framework" destdir="${build.dir.backwards}/classes/test"
+                  test.classpath="backwards.test.compile.classpath" javac.source="${javac.source.backwards}" javac.target="${javac.target.backwards}"/>
+      <compile-test-macro srcdir="${backwards.dir}/src/test" destdir="${build.dir.backwards}/classes/test"
+                  test.classpath="backwards.test.compile.classpath" javac.source="${javac.source.backwards}" javac.target="${javac.target.backwards}"/>
+      
+
+    </sequential>
+  </target>	
+
+  <target name="test-backwards" depends="compile-backwards, backwards-test-warning, junit-backwards-mkdir, junit-backwards-sequential, junit-backwards-parallel"/>
+
+  <target name="junit-backwards-mkdir">
+    <mkdir dir="${build.dir.backwards}/test"/>
+  </target>
+
+  <target name="check-backwards-params">
+    <condition property="backwards.ignoring.params">
+      <or>
+        <istrue value="${tests.nightly}"/>
+        <not><equals arg1="${tests.multiplier}" arg2="1"/></not>
+      </or>
+    </condition>
+  </target>
+
+  <target name="backwards-test-warning" depends="check-backwards-params" if="backwards.ignoring.params">
+    <echo>
+       Warning: Ignoring your multiplier and nightly settings for backwards tests.
+       These tests are for API compatibility only!
+    </echo>
+  </target>
+
+  <macrodef name="backwards-test-macro">
+  	<attribute name="threadNum" default="1"/>
+  	<attribute name="threadTotal" default="1"/>
+  	<sequential>
+  	  <!-- run branch tests against trunk jar:
+          Note: we disable multiplier/nightly because the purpose is to find API breaks
+          -->
+      <test-macro 
+    	dataDir="${backwards.dir}/src/test" 
+    	tempDir="${build.dir.backwards}/test" 
+    	junit.classpath="backwards.junit.classpath" 
+    	junit.output.dir="${junit.output.dir.backwards}" 
+        tests.nightly="false"
+        tests.multiplier="1"
+        threadNum="@{threadNum}" 
+        threadTotal="@{threadTotal}"/>
+  	</sequential>
+  </macrodef>
+
+  <target name="junit-backwards-sequential" if="tests.sequential">
+    <backwards-test-macro/>
+  </target>
+
+  <target name="junit-backwards-parallel" unless="tests.sequential">
+    <parallel threadsPerProcessor="${tests.threadspercpu}">
+     <backwards-test-macro threadNum="1" threadTotal="8"/>
+     <backwards-test-macro threadNum="2" threadTotal="8"/>
+     <backwards-test-macro threadNum="3" threadTotal="8"/>
+     <backwards-test-macro threadNum="4" threadTotal="8"/>
+     <backwards-test-macro threadNum="5" threadTotal="8"/>
+     <backwards-test-macro threadNum="6" threadTotal="8"/>
+     <backwards-test-macro threadNum="7" threadTotal="8"/>
+     <backwards-test-macro threadNum="8" threadTotal="8"/>
+    </parallel>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- J A R                                                              -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+
+  <target name="compile-core" depends="jflex-notice, javacc-notice, common.compile-core"/>
+
+  <!-- ================================================================== -->
+  <!-- D O C U M E N T A T I O N                                          -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="docs">
+  <!-- copies the docs over to the docs folder -->
+    <copy todir="build/docs">
+      <fileset dir="src/site/build/site"/> 
+    </copy>
+  </target>
+
+  <target name="javadoc" depends="javadocs"/>
+  <target name="javadocs" description="Generate javadoc" 
+          depends="javadocs-all, javadocs-core, javadocs-contrib, javadocs-test-framework">
+    <echo file="${javadoc.dir}/index.html" append="false">
+<![CDATA[<html><head><title>${Name} ${version} Javadoc Index</title></head>
+<body>
+<h1>${Name} ${version} Javadoc Index</h1>
+<ul>
+  <li><a href="all/index.html">All</a></li>
+  <li><a href="core/index.html">Core</a></li>
+  <li><a href="test-framework/index.html">Test Framework</a></li>
+  <li>Contrib packages:</li>
+  <ul>
+]]></echo>
+    <contrib-crawl target="javadocs-index.html" failonerror="false"/>
+    <echo file="${javadoc.dir}/index.html" append="true"><![CDATA[
+  </ul>
+</ul></body>]]></echo>
+  </target>
+	
+  <target name="javadocs-core" description="Generate javadoc for core classes">
+  	<sequential>
+      <mkdir dir="${javadoc.dir}/core"/>
+      <invoke-javadoc
+        destdir="${javadoc.dir}/core"
+      	title="${Name} ${version} core API">
+        <sources>
+          <packageset dir="src/java"/>
+          <link href=""/>
+        </sources>
+      </invoke-javadoc>
+     <jarify basedir="${javadoc.dir}/core" destfile="${build.dir}/${final.name}-javadoc.jar"/>
+    </sequential>
+  </target>
+
+  <target name="javadocs-contrib" description="Generate javadoc for contrib classes">
+    <contrib-crawl target="javadocs"
+                   failonerror="false"/>
+  </target>
+  	
+  <target name="javadocs-all" description="Generate javadoc for core and contrib classes">
+  	<sequential>
+      <mkdir dir="${javadoc.dir}/all"/>
+      
+      <path id="javadoc.classpath">
+        <path refid="classpath"/>
+        <pathelement location="${ant.home}/lib/ant.jar"/>
+        <fileset dir=".">
+          <exclude name="build/**/*.jar"/>
+          <include name="**/lib/*.jar"/>
+        </fileset>
+      </path>
+
+      <invoke-javadoc
+        destdir="${javadoc.dir}/all">
+        <sources>
+          <!-- TODO: find a dynamic way to do include multiple source roots -->
+          <packageset dir="src/java"/>
+
+          <!-- please keep this list up to date, and in alpha order...   -->
+        
+          <!-- ie: `find contrib/* -path \*src/java | sort` -->
+
+          <!-- if you make changes to the list of package sets, also -->
+          <!-- make sure the group list below is updated.            -->
+          <!-- Also remember to keep site.xml in sync.            -->		  
+
+          <packageset dir="contrib/analyzers/common/src/java"/>
+          <packageset dir="contrib/analyzers/smartcn/src/java"/>
+          <packageset dir="contrib/analyzers/stempel/src/java"/>
+          <packageset dir="contrib/benchmark/src/java"/>
+          <packageset dir="contrib/demo/src/java"/>
+          <packageset dir="contrib/facet/src/java"/>
+          <packageset dir="contrib/grouping/src/java"/>
+          <packageset dir="contrib/icu/src/java"/>
+          <packageset dir="contrib/highlighter/src/java"/>
+          <packageset dir="contrib/instantiated/src/java"/>
+          <packageset dir="contrib/join/src/java"/>
+          <packageset dir="contrib/memory/src/java"/>
+          <packageset dir="contrib/misc/src/java"/>
+          <packageset dir="contrib/queries/src/java"/>
+          <packageset dir="contrib/remote/src/java"/>
+          <packageset dir="contrib/spatial/src/java"/>
+          <packageset dir="contrib/spellchecker/src/java"/>
+          <packageset dir="contrib/xml-query-parser/src/java"/>
+          <packageset dir="contrib/queryparser/src/java"/>
+          <!-- end alpha sort -->
+
+          <!-- If the main javadoc Group listing includes an "Other   -->
+          <!-- Packages" group after the ones listed here, then those -->
+          <!-- packages are not being matched by any of these rules   -->
+  
+          <group title="Core" packages="org.apache.*:org.apache.lucene.analysis:org.apache.lucene.analysis.standard*:org.apache.lucene.analysis.tokenattributes*"/>
+
+          <group title="contrib: Analysis" packages="org.apache.lucene.analysis.*:org.tartarus.snowball*:org.egothor.stemmer*"/>
+          <group title="contrib: Benchmark" packages="org.apache.lucene.benchmark*"/>
+          <group title="contrib: ICU" packages="org.apache.lucene.collation*"/>
+          <group title="contrib: Demo" packages="org.apache.lucene.demo*"/>
+          <group title="contrib: Facet" packages="org.apache.lucene.facet*"/>
+          <group title="contrib: Grouping" packages="org.apache.lucene.search.grouping*"/>
+          <group title="contrib: Highlighter" packages="org.apache.lucene.search.highlight*:org.apache.lucene.search.vectorhighlight*"/>
+          <group title="contrib: Instantiated" packages="org.apache.lucene.store.instantiated*"/>
+          <group title="contrib: Join" packages="org.apache.lucene.search.join*"/>
+          <group title="contrib: Memory" packages="org.apache.lucene.index.memory*"/>
+          <group title="contrib: Misc " packages="org.apache.lucene.misc*"/>
+          <group title="contrib: Queries" packages="org.apache.lucene.search.similar*:org.apache.lucene.search.regex*:org.apache.regexp*"/>
+          <group title="contrib: Query Parser" packages="org.apache.lucene.queryParser.*"/>
+          <group title="contrib: Spatial" packages="org.apache.lucene.spatial*"/>
+          <group title="contrib: SpellChecker" packages="org.apache.lucene.search.spell*"/>
+          <group title="contrib: XML Query Parser" packages="org.apache.lucene.xmlparser*"/>
+          
+        </sources>
+      </invoke-javadoc>
+  	</sequential>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- D I S T R I B U T I O N                                            -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="package" depends="jar-core, jar-test-framework, docs, javadocs, build-contrib, init-dist, changes-to-html"/>
+
+  <target name="nightly" depends="test, package-tgz">
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Packages the distribution with zip                                 -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="package-zip" depends="package"
+    description="--> Generates the Lucene distribution as .zip">
+
+    <delete file="${dist.dir}/lucene-${version}.zip"/>
+    <zip destfile="${dist.dir}/lucene-${version}.zip">
+      <zipfileset prefix="lucene-${version}" dir=".">
+        <patternset refid="binary.root.dist.patterns"/>
+      </zipfileset>
+      <zipfileset dir="${build.dir}" includes="build-demo.xml" fullpath="lucene-${version}/build.xml"/>
+      <zipfileset prefix="lucene-${version}" dir="${build.dir}">
+        <patternset refid="binary.build.dist.patterns"/>
+      </zipfileset>
+    </zip>
+	<make-checksums file="${dist.dir}/lucene-${version}.zip"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- packages the distribution with tar-gzip                            -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="package-tgz" depends="package"
+    description="--> Generates the lucene distribution as .tgz">
+
+    <delete file="${build.dir}/lucene-${version}.tar"/>
+    <delete file="${dist.dir}/lucene-${version}.tgz"/>
+    <tar tarfile="${build.dir}/lucene-${version}.tar" longfile="gnu">
+      <tarfileset prefix="lucene-${version}" dir=".">
+        <patternset refid="binary.root.dist.patterns"/>
+      </tarfileset>
+      <tarfileset prefix="lucene-${version}" dir="${build.dir}">
+        <patternset refid="binary.build.dist.patterns"/>
+      </tarfileset>
+    </tar>
+
+    <gzip zipfile="${dist.dir}/lucene-${version}.tgz"
+      src="${build.dir}/lucene-${version}.tar"
+      />
+	  <make-checksums file="${dist.dir}/lucene-${version}.tgz"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- packages the distribution with zip and tar-gzip                    -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="package-all-binary" depends="package-zip, package-tgz"
+    description="--> Generates the .tgz and .zip distributions"/>
+
+  <!-- ================================================================== -->
+  <!-- same as package-all. it is just here for compatibility.            -->
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <target name="dist" depends="package-all-binary"/>
+
+  <!-- ================================================================== -->
+  <!-- S O U R C E  D I S T R I B U T I O N                               -->
+  <!-- ================================================================== -->
+    <target name="init-dist" >
+
+        <!-- Package is not called first if packaging src standalone, so the dist.dir may not exist -->
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${maven.dist.dir}"/>
+    </target>
+
+  <!-- ================================================================== -->
+  <!-- Packages the sources from "svn export" with tar-gzip               -->
+  <!-- ================================================================== -->
+  <target name="package-tgz-src" depends="init, init-dist"
+          description="--> Generates the Lucene source distribution from 'svn export' as .tgz">
+    <property name="source.package.file"
+              value="${dist.dir}/lucene-${version}-src.tgz"/>
+    <delete file="${source.package.file}"/>
+    <svn-export-source source.dir="."/>
+    <build-changes changes.src.dir="${svn.export.dir}/src/site/changes"
+                   changes.target.dir="${svn.export.dir}/docs/changes"/>
+    <tar tarfile="${source.package.file}" compression="gzip" longfile="gnu">
+      <tarfileset prefix="lucene-${version}" dir="${svn.export.dir}"/>
+    </tar>
+    <make-checksums file="${source.package.file}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Packages the sources from local working copy with tar-gzip     -->
+  <!-- ================================================================== -->
+  <target name="package-local-src-tgz" depends="init"
+    description="--> Packages the Lucene source from the local working copy">
+    <mkdir dir="${common.dir}/build"/>
+    <property name="source.package.file"
+              value="${common.dir}/build/lucene-${version}-src.tgz"/>
+    <delete file="${source.package.file}"/>
+    <tar tarfile="${source.package.file}" compression="gzip" longfile="gnu">
+      <tarfileset prefix="lucene-${version}" dir=".">
+        <patternset refid="lucene.local.src.package.patterns"/>
+      </tarfileset>
+    </tar>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- same as package-tgz-src. it is just here for compatibility.        -->
+  <!-- ================================================================== -->
+  <target name="dist-src" depends="package-tgz-src"/>
+
+  <target name="dist-all" depends="dist, dist-src"/>
+
+  <target name="copy-to-stage">
+    <copy-to-stage-macro artifacts.dir="${dist.dir}"/>
+  </target>
+
+  <target name="prepare-release" depends="clean, dist-all, generate-maven-artifacts, sign-artifacts"/>
+
+  <target name="stage" depends="prepare-release, copy-to-stage"/>
+
+  <target name="generate-maven-artifacts"
+          depends="package, jar-src, jar-test-framework-src, javadocs">
+    <taskdef resource="org/apache/maven/artifact/ant/antlib.xml" 
+             uri="antlib:org.apache.maven.artifact.ant" 
+             classpathref="maven-ant-tasks.classpath"/>
+    <sequential>
+      <ant target="get-maven-poms" dir=".."/>
+
+      <m2-deploy pom.xml="../pom.xml"/> <!-- Lucene/Solr grandparent POM -->
+      <m2-deploy pom.xml="pom.xml"/>    <!-- Lucene parent POM -->
+      <m2-deploy pom.xml="src/pom.xml"> <!-- Lucene core POM -->
+        <artifact-attachments>
+          <attach file="${build.dir}/${final.name}-src.jar"
+                  classifier="sources"/>
+          <attach file="${build.dir}/${final.name}-javadoc.jar"
+                  classifier="javadoc"/>
+        </artifact-attachments>
+      </m2-deploy>
+      <m2-deploy pom.xml="src/test-framework/pom.xml"
+                 jar.file="${build.dir}/lucene-test-framework-${version}.jar">
+        <artifact-attachments>
+          <attach file="${build.dir}/lucene-test-framework-${version}-src.jar"
+                  classifier="sources"/>
+          <attach file="${build.dir}/lucene-test-framework-${version}-javadoc.jar"
+                  classifier="javadoc"/>
+        </artifact-attachments>
+      </m2-deploy>
+
+      <contrib-crawl target="dist-maven"/>
+    </sequential>
+  </target>
+	
+  <!-- ================================================================== -->
+  <!-- support for signing the artifacts using gpg                        -->
+  <!-- ================================================================== -->
+  <target name="sign-artifacts">
+    <sign-artifacts-macro artifacts.dir="${dist.dir}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build the JavaCC files into the source tree                        -->
+  <!-- ================================================================== -->
+  <target name="clean-javacc">
+    <delete>
+      <fileset dir="src/java/org/apache/lucene/queryParser" includes="*.java">
+        <containsregexp expression="Generated.*By.*JavaCC"/>
+      </fileset>
+      <fileset dir="contrib/queryparser/src/java/org/apache/lucene/queryParser/surround/parser" includes="*.java">
+        <containsregexp expression="Generated.*By.*JavaCC"/>
+      </fileset>
+      <fileset dir="contrib/queryparser/src/java/org/apache/lucene/queryParser/standard/parser" includes="*.java">
+        <containsregexp expression="Generated.*By.*JavaCC"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="javacc" depends="init,javacc-check,clean-javacc,javacc-QueryParser,javacc-contrib-queryparser,javacc-contrib-demo"/>
+
+  <target name="javacc-QueryParser" depends="init,javacc-check" if="javacc.present">
+    <sequential>
+      <invoke-javacc target="src/java/org/apache/lucene/queryParser/QueryParser.jj"
+                     outputDir="src/java/org/apache/lucene/queryParser"/>
+
+      <!-- Change the inccorrect public ctors for QueryParser to be protected instead -->
+      <replaceregexp file="src/java/org/apache/lucene/queryParser/QueryParser.java"
+		     byline="true"
+		     match="public QueryParser\(CharStream "
+		     replace="protected QueryParser(CharStream "/>
+      <replaceregexp file="src/java/org/apache/lucene/queryParser/QueryParser.java"
+		     byline="true"
+		     match="public QueryParser\(QueryParserTokenManager "
+		     replace="protected QueryParser(QueryParserTokenManager "/>
+
+    </sequential>
+  </target>	
+
+  <target name="javacc-contrib-queryparser" depends="init,javacc-check" if="javacc.present">
+    <ant target="javacc"
+      dir="contrib/queryparser"
+      antfile="build.xml" 
+    />
+  </target>
+
+  <target name="javacc-contrib-demo" depends="init,javacc-check" if="javacc.present">
+    <ant target="javacc"
+      dir="contrib/demo"
+      antfile="build.xml"
+    />
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build the JFlex files into the source tree                         -->
+  <!-- ================================================================== -->
+
+  <target name="jflex" depends="jflex-check,clean-jflex,gen-uax29-supp-macros,
+                                jflex-StandardAnalyzer,jflex-UAX29URLEmailTokenizer"/>
+
+  <target name="gen-uax29-supp-macros">
+    <subant target="gen-uax29-supp-macros">
+       <fileset dir="contrib/icu" includes="build.xml"/>
+    </subant>
+  </target>
+
+  <target name="jflex-StandardAnalyzer" depends="init,jflex-check" if="jflex.present">
+    <taskdef classname="jflex.anttask.JFlexTask" name="jflex">
+			<classpath refid="jflex.classpath"/>
+    </taskdef>
+
+    <jflex file="src/java/org/apache/lucene/analysis/standard/StandardTokenizerImpl.jflex"
+           outdir="src/java/org/apache/lucene/analysis/standard"
+           nobak="on" />
+    <jflex file="src/java/org/apache/lucene/analysis/standard/ClassicTokenizerImpl.jflex"
+           outdir="src/java/org/apache/lucene/analysis/standard"
+           nobak="on" />
+    <jflex file="src/java/org/apache/lucene/analysis/standard/std31/StandardTokenizerImpl31.jflex"
+           outdir="src/java/org/apache/lucene/analysis/standard/std31"
+           nobak="on" />
+  </target>
+
+  <target name="jflex-UAX29URLEmailTokenizer" depends="jflex-check" if="jflex.present">
+    <taskdef classname="jflex.anttask.JFlexTask" name="jflex">
+			<classpath refid="jflex.classpath"/>
+    </taskdef>
+    <jflex file="src/java/org/apache/lucene/analysis/standard/UAX29URLEmailTokenizerImpl.jflex"
+           outdir="src/java/org/apache/lucene/analysis/standard"
+           nobak="on" />
+    <jflex file="src/java/org/apache/lucene/analysis/standard/std31/UAX29URLEmailTokenizerImpl31.jflex"
+           outdir="src/java/org/apache/lucene/analysis/standard/std31"
+           nobak="on" />
+  </target>
+
+  <property name="tld.zones" value="http://www.internic.net/zones/root.zone"/>
+  <property name="tld.output" location="src/java/org/apache/lucene/analysis/standard/ASCIITLD.jflex-macro"/>
+
+  <target name="gen-tlds" depends="compile-tools">
+    <java
+      classname="org.apache.lucene.analysis.standard.GenerateJflexTLDMacros"
+      dir="."
+      fork="true"
+      failonerror="true">
+      <classpath>
+      	<pathelement location="${build.dir}/classes/tools"/>
+      </classpath>
+      <arg value="${tld.zones}"/>
+      <arg value="${tld.output}"/>
+    </java>
+  </target>
+
+  <target name="clean-jflex">
+    <delete>
+      <fileset dir="src/java/org/apache/lucene/analysis/standard" includes="**/*.java">
+        <containsregexp expression="generated.*by.*JFlex"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="build-contrib" depends="compile-test"
+          description="Builds all contrib modules and their tests">
+    <contrib-crawl target="build-artifacts-and-tests"/>
+  </target>
+
+  <target name="test-contrib" depends="build-contrib">
+    <contrib-crawl target="test" failonerror="true"/>
+  </target>
+
+  <!--
+   compile changes.txt into an html file
+   -->
+  <macrodef name="build-changes">
+    <attribute name="changes.src.dir" default="${changes.src.dir}"/>
+    <attribute name="changes.target.dir" default="${changes.target.dir}"/>
+    <sequential>
+      <mkdir dir="@{changes.target.dir}"/>
+      <exec executable="perl" input="CHANGES.txt" output="@{changes.target.dir}/Changes.html"
+            failonerror="true" logError="true">
+        <arg value="@{changes.src.dir}/changes2html.pl"/>
+      </exec>
+      <exec executable="perl" input="contrib/CHANGES.txt" output="@{changes.target.dir}/Contrib-Changes.html"
+            failonerror="true" logError="true">
+        <arg value="@{changes.src.dir}/changes2html.pl"/>
+      </exec>
+      <copy todir="@{changes.target.dir}">
+        <fileset dir="@{changes.src.dir}" includes="*.css"/>
+      </copy>
+    </sequential>
+  </macrodef>
+
+  <target name="changes-to-html">
+    <build-changes changes.src.dir="${changes.src.dir}" changes.target.dir="${changes.target.dir}" />
+  </target>
+
+  <!--
+   Committer helpers
+   -->
+
+  <property name="patch.file" value="${basedir}/../patches/${patch.name}"/>
+  <!-- Apply a patch.  Assumes  patch can be applied in the basedir.
+  -Dpatch.name assumes the patch is located in ${basedir}/../patches/${patch.name}
+  -Dpatch.file means the patch can be located anywhere on the file system
+  -->
+  <target name="apply-patch" depends="clean" description="Apply a patch file.  Set -Dpatch.file, or -Dpatch.name when the patch is in the directory ../patches/">
+    <patch patchfile="${patch.file}" strip="0"/>
+  </target>
+
+  <target name="jar-test-framework" depends="compile-test-framework">
+    <jarify basedir="${build.dir}/classes/test-framework" destfile="${build.dir}/lucene-test-framework-${version}.jar"
+            title="Lucene Search Engine: Test Framework" />
+  </target>
+
+  <target name="javadocs-test-framework">
+	<sequential>
+      <mkdir dir="${javadoc.dir}/test-framework"/>
+      <invoke-javadoc
+          overview="src/test-framework/java/overview.html"
+          destdir="${javadoc.dir}/test-framework"
+          title="${Name} ${version} Test Framework API">
+        <sources>
+          <packageset dir="src/test-framework/java"/>
+          <link href=""/>
+        </sources>
+      </invoke-javadoc>
+      <jarify basedir="${javadoc.dir}/test-framework" destfile="${build.dir}/lucene-test-framework-${version}-javadoc.jar"
+	          title="Lucene Search Engine: Test Framework" />
+    </sequential>
+  </target>
+
+  <target name="jar-test-framework-src" depends="init">
+    <jarify basedir="${tests-framework.src.dir}" destfile="${build.dir}/lucene-test-framework-${version}-src.jar"
+            title="Lucene Search Engine: Test Framework">
+      <fileset dir="${tests-framework.src.dir}/../resources" erroronmissingdir="no"/>
+    </jarify>
+  </target>
+
+  <!-- Override common-build.xml definition to check for the jar already being up-to-date -->
+  <target name="jar-core" depends="check-lucene-core-uptodate,compile-core" unless="lucene-core.uptodate">
+    <jarify/>
+  </target>
+</project>

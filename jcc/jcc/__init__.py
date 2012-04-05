@@ -28,6 +28,9 @@ if sys.platform == 'win32':
             path.insert(0, eggpath)
             os.environ['Path'] = os.pathsep.join(path)
 
+from jcc import _jcc
+
+# used when jcc is invoked with -m from python 2.5
 if __name__ == '__main__':
     import jcc.__main__
 else:

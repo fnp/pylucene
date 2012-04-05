@@ -592,6 +592,9 @@ int _parseArgs(PyObject **args, unsigned int count, char *types, ...)
     if (array)
         return -1;
 
+    if (pos != typeCount)
+      return -1;
+
     pos = 0;
 
     for (unsigned int a = 0; a < count; a++, pos++) {

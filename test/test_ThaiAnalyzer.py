@@ -94,12 +94,15 @@ class ThaiAnalyzerTestCase(BaseTokenStreamTestCase):
 if __name__ == "__main__":
     import sys, lucene
     lucene.initVM()
-    if '-loop' in sys.argv:
-        sys.argv.remove('-loop')
-        while True:
-            try:
-                main()
-            except:
-                pass
+    if ThaiWordFilter.DBBI_AVAILABLE:
+        if '-loop' in sys.argv:
+            sys.argv.remove('-loop')
+            while True:
+                try:
+                    main()
+                except:
+                    pass
+        else:
+            main()
     else:
-        main()
+        print >>sys.stderr, "Thai not supported by this JVM, tests skipped"

@@ -1,6 +1,15 @@
-
-Version 3.3 -> 3.4.0
+Version 3.4 -> 3.5.0
 --------------------
+ - using Lucene 3.5 sources
+ - added facet contrib module to build
+ - refreshed SynonymAnalyzerViewer sample and wordnet index (Thomas Koch)
+ - added PythonReusableAnalyzerBase (Michael McCandless)
+ - added PythonIndexDeletionPolicy.java (Michael McCandless)
+ - added spellchecker contrib module to build
+ - PyLucene built with JCC 2.12
+
+Version 3.3 -> 3.4
+------------------
  - added new join contrib module to build
  - PyLucene built with JCC 2.11
 

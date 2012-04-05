@@ -31,7 +31,7 @@ public:
 };
 
 template<typename U>
-static PyObject *get(U *self, int n)
+static PyObject *get(U *self, Py_ssize_t n)
 {
     return self->array.get(n);
 }
@@ -43,7 +43,7 @@ static PyObject *toSequence(U *self)
 }
 
 template<typename U>
-static PyObject *toSequence(U *self, int lo, int hi)
+static PyObject *toSequence(U *self, Py_ssize_t lo, Py_ssize_t hi)
 {
     return self->array.toSequence(lo, hi);
 }
@@ -351,7 +351,7 @@ static int seq_set(U *self, Py_ssize_t n, PyObject *value)
 template<typename U>
 static int seq_setslice(U *self, Py_ssize_t lo, Py_ssize_t hi, PyObject *values)
 {
-    int length = self->array.length;
+    Py_ssize_t length = self->array.length;
 
     if (values == NULL)
     {
@@ -371,7 +371,7 @@ static int seq_setslice(U *self, Py_ssize_t lo, Py_ssize_t hi, PyObject *values)
     if (!sequence)
         return -1;
 
-    int size = PySequence_Fast_GET_SIZE(sequence);
+    Py_ssize_t size = PySequence_Fast_GET_SIZE(sequence);
     if (size < 0)
         goto error;
 
@@ -381,7 +381,7 @@ static int seq_setslice(U *self, Py_ssize_t lo, Py_ssize_t hi, PyObject *values)
         goto error;
     }
 
-    for (int i = lo; i < hi; i++) {
+    for (Py_ssize_t i = lo; i < hi; i++) {
         PyObject *value = PySequence_Fast_GET_ITEM(sequence, i - lo);
 
         if (value == NULL)
@@ -402,7 +402,7 @@ static int seq_setslice(U *self, Py_ssize_t lo, Py_ssize_t hi, PyObject *values)
 template<typename T> 
 static jclass initializeClass(void)
 {
-    return env->get_vm_env()->GetObjectClass(JArray<T>(0).this$);
+    return env->get_vm_env()->GetObjectClass(JArray<T>((Py_ssize_t) 0).this$);
 }
 
 template<typename T> 
@@ -612,7 +612,7 @@ public:
     PyObject *(*wrapfn)(const T&);
 };
 
-template<> PyObject *get(_t_jobjectarray<jobject> *self, int n)
+template<> PyObject *get(_t_jobjectarray<jobject> *self, Py_ssize_t n)
 {
     return self->array.get(n, self->wrapfn);
 }
@@ -622,7 +622,8 @@ template<> PyObject *toSequence(_t_jobjectarray<jobject> *self)
     return self->array.toSequence(self->wrapfn);
 }
 
-template<> PyObject *toSequence(_t_jobjectarray<jobject> *self, int lo, int hi)
+template<> PyObject *toSequence(_t_jobjectarray<jobject> *self,
+                                Py_ssize_t lo, Py_ssize_t hi)
 {
     return self->array.toSequence(lo, hi, self->wrapfn);
 }
@@ -719,7 +720,7 @@ template<> int init< jobject,_t_jobjectarray<jobject> >(_t_jobjectarray<jobject>
 template<> jclass initializeClass<jobject>(void)
 {
     jclass cls = env->findClass("java/lang/Object");
-    return env->get_vm_env()->GetObjectClass(JArray<jobject>(cls, 0).this$);
+    return env->get_vm_env()->GetObjectClass(JArray<jobject>(cls, (Py_ssize_t) 0).this$);
 }
 
 template<> PyObject *cast_<jobject>(PyTypeObject *type,
@@ -1103,10 +1104,11 @@ PyObject *JArray_Type(PyObject *self, PyObject *arg)
     if (type_name != NULL)
     {
         name = PyString_AsString(type_name);
-        Py_DECREF(type_name);
-
         if (!name)
+        {
+            Py_DECREF(type_name);
             return NULL;
+        }
     }
 
     if (!strcmp(name, "object"))
@@ -1132,10 +1134,14 @@ PyObject *JArray_Type(PyObject *self, PyObject *arg)
     else
     {
         PyErr_SetObject(PyExc_ValueError, arg);
+        Py_XDECREF(type_name);
+
         return NULL;
     }
 
     Py_INCREF(type);
+    Py_XDECREF(type_name);
+
     return type;
 }
 

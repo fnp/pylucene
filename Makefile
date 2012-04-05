@@ -15,10 +15,10 @@
 # site-packages directory.
 #
 
-VERSION=3.4.0-1
+VERSION=3.5.0-3
 LUCENE_SVN_VER=HEAD
-LUCENE_VER=3.4.0
-LUCENE_SVN=http://svn.apache.org/repos/asf/lucene/dev/tags/lucene_solr_3_4_0
+LUCENE_VER=3.5.0
+LUCENE_SVN=http://svn.apache.org/repos/asf/lucene/dev/tags/lucene_solr_3_5_0
 PYLUCENE:=$(shell pwd)
 LUCENE_SRC=lucene-java-$(LUCENE_VER)
 LUCENE=$(LUCENE_SRC)/lucene
@@ -50,104 +50,98 @@ LUCENE=$(LUCENE_SRC)/lucene
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc.__main__ --shared --arch x86_64
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X 10.6 (MacPorts 1.8.0 64-bit Python 2.7, Java 1.6)
 #PREFIX_PYTHON=/opt/local
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc --shared --arch x86_64
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X 10.6 (MacPorts 1.8.0 64-bit Python 2.6, Java 1.6)
 #PREFIX_PYTHON=/opt/local
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc.__main__ --shared --arch x86_64
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X 10.6 (64-bit and 32-bit Python 2.6 together, Java 1.6)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc.__main__ --shared --arch x86_64 --arch i386
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X 10.5 (32-bit Python 2.5, Java 1.5)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc --shared
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X  (Python 2.3.5, Java 1.5, setuptools 0.6c7, Intel Mac OS X 10.4)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/site-packages/JCC-2.3-py2.3-macosx-10.4-i386.egg/jcc/__init__.py
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Mac OS X  (Python 2.3.5, Java 1.5, setuptools 0.6c7, PPC Mac OS X 10.4)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/site-packages/JCC-2.3-py2.3-macosx-10.4-ppc.egg/jcc/__init__.py
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Linux     (Ubuntu 6.06, Python 2.4, Java 1.5, no setuptools)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) $(PREFIX_PYTHON)/lib/python2.4/site-packages/jcc/__init__.py
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Linux     (Ubuntu 8.10 64-bit, Python 2.5.2, OpenJDK 1.6, setuptools 0.6c9)
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc --shared
-#NUM_FILES=3
-
-PREFIX_PYTHON=$(VIRTUAL_ENV)
-ANT=ant
-PYTHON=$(PREFIX_PYTHON)/bin/python
-JCC=$(PYTHON) -m jcc --shared
-NUM_FILES=3
+#NUM_FILES=4
 
 # FreeBSD
 #PREFIX_PYTHON=/usr
 #ANT=ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) -m jcc
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Solaris   (Solaris 11, Python 2.4 32-bit, Sun Studio 12, Java 1.6)
 #PREFIX_PYTHON=/usr
 #ANT=/usr/local/apache-ant-1.7.0/bin/ant
 #PYTHON=$(PREFIX_PYTHON)/bin/python
 #JCC=$(PYTHON) $(PREFIX_PYTHON)/lib/python2.4/site-packages/jcc/__init__.py
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Windows   (Win32, Python 2.5.1, Java 1.6, ant 1.7.0)
 #PREFIX_PYTHON=/cygdrive/o/Python-2.5.2/PCbuild
 #ANT=JAVA_HOME=o:\\Java\\jdk1.6.0_02 /cygdrive/o/java/apache-ant-1.7.0/bin/ant
 #PYTHON=$(PREFIX_PYTHON)/python.exe
 #JCC=$(PYTHON) -m jcc --shared
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Windows   (Win32, msys/MinGW, Python 2.6.4, Java 1.6, ant 1.7.1 (WinAnt))
 #PREFIX_PYTHON=/c/Python26
 #ANT=JAVA_HOME="c:\\Program Files\\Java\\jdk1.6.0_18" "/c/Program Files/WinAnt/bin/ant"
 #PYTHON=$(PREFIX_PYTHON)/python.exe
 #JCC=$(PYTHON) -m jcc.__main__ --shared --compiler mingw32
-#NUM_FILES=3
+#NUM_FILES=4
 
 # Windows   (Win32, Python 2.7, Java 1.6, ant 1.8.1, Java not on PATH)
 #PREFIX_PYTHON=/cygdrive/c/Python27
 #ANT=JAVA_HOME=c:\\jdk1.6.0_22 /cygdrive/c/java/apache-ant-1.8.1/bin/ant
 #PYTHON=$(PREFIX_PYTHON)/python.exe
 #JCC=$(PYTHON) -m jcc --shared --find-jvm-dll
-#NUM_FILES=3
+#NUM_FILES=4
 
 JARS=$(LUCENE_JAR)
 
@@ -157,11 +151,12 @@ JARS+=$(MEMORY_JAR)             # single-document memory index
 JARS+=$(HIGHLIGHTER_JAR)        # needs memory contrib
 JARS+=$(EXTENSIONS_JAR)         # needs highlighter contrib
 JARS+=$(QUERIES_JAR)            # regex and other contrib queries
-JARS+=$(STEMPEL_JAR)
 #JARS+=$(SMARTCN_JAR)            # smart chinese analyzer
 #JARS+=$(SPATIAL_JAR)            # spatial lucene
 JARS+=$(GROUPING_JAR)           # grouping module
 JARS+=$(JOIN_JAR)               # join module
+JARS+=$(FACET_JAR)              # facet module
+JARS+=$(SPELLCHECKER_JAR)       # spellchecker/suggest module
 
 
 #
@@ -183,10 +178,11 @@ MEMORY_JAR=$(LUCENE)/build/contrib/memory/lucene-memory-$(LUCENE_VER).jar
 QUERIES_JAR=$(LUCENE)/build/contrib/queries/lucene-queries-$(LUCENE_VER).jar
 EXTENSIONS_JAR=build/jar/extensions.jar
 SMARTCN_JAR=$(LUCENE)/build/contrib/analyzers/smartcn/lucene-smartcn-$(LUCENE_VER).jar
-STEMPEL_JAR=$(LUCENE)/build/contrib/analyzers/stempel/lucene-stempel-$(LUCENE_VER).jar
 SPATIAL_JAR=$(LUCENE)/build/contrib/spatial/lucene-spatial-$(LUCENE_VER).jar
 GROUPING_JAR=$(LUCENE)/build/contrib/grouping/lucene-grouping-$(LUCENE_VER).jar
 JOIN_JAR=$(LUCENE)/build/contrib/join/lucene-join-$(LUCENE_VER).jar
+FACET_JAR=$(LUCENE)/build/contrib/facet/lucene-facet-$(LUCENE_VER).jar
+SPELLCHECKER_JAR=$(LUCENE)/build/contrib/spellchecker/lucene-spellchecker-$(LUCENE_VER).jar
 
 ICUPKG:=$(shell which icupkg)
 
@@ -234,9 +230,6 @@ $(EXTENSIONS_JAR): $(LUCENE_JAR)
 $(SMARTCN_JAR): $(LUCENE_JAR)
 	cd $(LUCENE)/contrib/analyzers/smartcn; $(ANT) -Dversion=$(LUCENE_VER)
 
-$(STEMPEL_JAR): $(LUCENE_JAR)
-	cd $(LUCENE)/contrib/analyzers/stempel; $(ANT) -Dversion=$(LUCENE_VER)
-
 $(SPATIAL_JAR): $(LUCENE_JAR)
 	cd $(LUCENE)/contrib/spatial; $(ANT) -Dversion=$(LUCENE_VER)
 
@@ -245,6 +238,12 @@ $(GROUPING_JAR): $(LUCENE_JAR)
 
 $(JOIN_JAR): $(LUCENE_JAR)
 	cd $(LUCENE)/contrib/join; $(ANT) -Dversion=$(LUCENE_VER)
+
+$(FACET_JAR): $(LUCENE_JAR)
+	cd $(LUCENE)/contrib/facet; $(ANT) -Dversion=$(LUCENE_VER)
+
+$(SPELLCHECKER_JAR): $(LUCENE_JAR)
+	cd $(LUCENE)/contrib/spellchecker; $(ANT) -Dversion=$(LUCENE_VER)
 
 JCCFLAGS?=
 
@@ -329,7 +328,7 @@ clean:
 
 realclean:
 	if test ! -d $(LUCENE)/.svn; then rm -rf $(LUCENE_SRC); else rm -rf $(LUCENE)/build; fi
-	rm -rf build samples/LuceneInAction/index
+	rm -rf build samples/LuceneInAction/index samples/LuceneInAction/indexes
 
 OS=$(shell uname)
 BUILD_TEST:=$(PYLUCENE)/build/test
@@ -358,6 +357,7 @@ test: install-test samples/LuceneInAction/index
 	PYTHONPATH=$(BUILD_TEST) $(PYTHON) samples/LuceneInAction/Explainer.py samples/LuceneInAction/index programming
 	PYTHONPATH=$(BUILD_TEST) $(PYTHON) samples/LuceneInAction/HighlightIt.py
 	PYTHONPATH=$(BUILD_TEST) $(PYTHON) samples/LuceneInAction/SortingExample.py
+	PYTHONPATH=$(BUILD_TEST) $(PYTHON) samples/LuceneInAction/SynonymAnalyzerViewer.py
 
 
 ARCHIVE=pylucene-$(VERSION)-src.tar.gz

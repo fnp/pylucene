@@ -13,22 +13,24 @@
 # ====================================================================
 
 from lucene import \
-     Document, Term, IndexSearcher, TermQuery, FSDirectory, RAMDirectory, Hit
+     Document, Term, IndexSearcher, TermQuery, \
+     SimpleFSDirectory, RAMDirectory, File
 
 
 class WordNetSynonymEngine(object):
 
     def __init__(self, indexDir):
 
-        self.directory = RAMDirectory(indexDir)
+        self.directory = RAMDirectory(SimpleFSDirectory(File(indexDir)))
         self.searcher = IndexSearcher(self.directory)
 
     def getSynonyms(self, word):
 
         synList = []
-
-        for hit in self.searcher.search(TermQuery(Term("word", word))):
-            doc = Hit.cast_(hit).getDocument()
+        topDocs = self.searcher.search(TermQuery(Term("word", word)), 50)
+        
+        for scoreDoc in topDocs.scoreDocs:
+            doc = self.searcher.doc(scoreDoc.doc)
             for value in doc.getValues("syn"):
                 synList.append(value)
 

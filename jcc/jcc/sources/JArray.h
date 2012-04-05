@@ -41,7 +41,7 @@ extern PyTypeObject *PY_TYPE(JArrayShort);
 
 template<typename T> class JArray : public java::lang::Object {
 public:
-    int length;
+    Py_ssize_t length;
 
     explicit JArray<T>(jobject obj) : java::lang::Object(obj) {
         length = this$ ? env->getArrayLength((jobjectArray) this$) : 0;
@@ -66,13 +66,13 @@ public:
 
         PyObject *list = PyList_New(length);
 
-        for (int i = 0; i < length; i++)
+        for (Py_ssize_t i = 0; i < length; i++)
             PyList_SET_ITEM(list, i, (*wrapfn)((*this)[i]));
 
         return list;
     }
 
-    PyObject *get(int n, PyObject *(*wrapfn)(const T&))
+    PyObject *get(Py_ssize_t n, PyObject *(*wrapfn)(const T&))
     {
         if (this$ != NULL)
         {
@@ -88,16 +88,16 @@ public:
     }
 #endif
 
-    T operator[](int n) {
+    T operator[](Py_ssize_t n) {
         return T(env->getObjectArrayElement((jobjectArray) this$, n));
     }
 };
 
 template<> class JArray<jobject> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
-    JArray<jobject>(jclass cls, int n) : java::lang::Object(env->get_vm_env()->NewObjectArray(n, cls, NULL)) {
+    JArray<jobject>(jclass cls, Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewObjectArray(n, cls, NULL)) {
         length = env->getArrayLength((jobjectArray) this$);
     }
 
@@ -119,7 +119,8 @@ template<> class JArray<jobject> : public java::lang::Object {
         return toSequence(0, length, wrapfn);
     }
 
-    PyObject *toSequence(int lo, int hi, PyObject *(*wrapfn)(const jobject&))
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi,
+                         PyObject *(*wrapfn)(const jobject&))
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -137,7 +138,7 @@ template<> class JArray<jobject> : public java::lang::Object {
         if (!wrapfn)
             wrapfn = java::lang::t_Object::wrap_jobject;
 
-        for (int i = lo; i < hi; i++) {
+        for (Py_ssize_t i = lo; i < hi; i++) {
             jobject jobj = env->getObjectArrayElement((jobjectArray) this$, i);
             PyObject *obj = (*wrapfn)(jobj);
 
@@ -147,7 +148,7 @@ template<> class JArray<jobject> : public java::lang::Object {
         return list;
     }
 
-    PyObject *get(int n, PyObject *(*wrapfn)(const jobject&))
+    PyObject *get(Py_ssize_t n, PyObject *(*wrapfn)(const jobject&))
     {
         if (this$ != NULL)
         {
@@ -170,7 +171,7 @@ template<> class JArray<jobject> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -210,14 +211,14 @@ template<> class JArray<jobject> : public java::lang::Object {
     PyObject *wrap(PyObject *(*wrapfn)(const jobject&));
 #endif
 
-    jobject operator[](int n) {
+    jobject operator[](Py_ssize_t n) {
         return (jobject) env->getObjectArrayElement((jobjectArray) this$, n);
     }
 };
 
 template<> class JArray<jstring> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     JArray<jstring>(jobject obj) : java::lang::Object(obj) {
         length = this$ ? env->getArrayLength((jobjectArray) this$) : 0;
@@ -227,7 +228,7 @@ template<> class JArray<jstring> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jstring>(int n) : java::lang::Object(env->get_vm_env()->NewObjectArray(n, env->findClass("java/lang/String"), NULL)) {
+    JArray<jstring>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewObjectArray(n, env->findClass("java/lang/String"), NULL)) {
         length = env->getArrayLength((jobjectArray) this$);
     }
 
@@ -235,7 +236,7 @@ template<> class JArray<jstring> : public java::lang::Object {
     JArray<jstring>(PyObject *sequence) : java::lang::Object(env->get_vm_env()->NewObjectArray(PySequence_Length(sequence), env->findClass("java/lang/String"), NULL)) {
         length = env->getArrayLength((jobjectArray) this$);
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (obj == NULL)
@@ -257,7 +258,7 @@ template<> class JArray<jstring> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -272,7 +273,7 @@ template<> class JArray<jstring> : public java::lang::Object {
 
         PyObject *list = PyList_New(hi - lo);
 
-        for (int i = lo; i < hi; i++) {
+        for (Py_ssize_t i = lo; i < hi; i++) {
             jstring str = (jstring)
                 env->getObjectArrayElement((jobjectArray) this$, i);
             PyObject *obj = env->fromJString(str, 1);
@@ -283,7 +284,7 @@ template<> class JArray<jstring> : public java::lang::Object {
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -304,7 +305,7 @@ template<> class JArray<jstring> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -330,14 +331,14 @@ template<> class JArray<jstring> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jstring operator[](int n) {
+    jstring operator[](Py_ssize_t n) {
         return (jstring) env->getObjectArrayElement((jobjectArray) this$, n);
     }
 };
 
 template<> class JArray<jboolean> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -369,7 +370,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jboolean>(int n) : java::lang::Object(env->get_vm_env()->NewBooleanArray(n)) {
+    JArray<jboolean>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewBooleanArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -379,7 +380,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         arrayElements elts = elements();
         jboolean *buf = (jboolean *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -404,7 +405,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -421,7 +422,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         arrayElements elts = elements();
         jboolean *buf = (jboolean *) elts;
 
-        for (int i = lo; i < hi; i++) {
+        for (Py_ssize_t i = lo; i < hi; i++) {
             jboolean value = buf[i];
             PyObject *obj = value ? Py_True : Py_False;
 
@@ -432,7 +433,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -447,7 +448,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -468,7 +469,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jboolean operator[](int n) {
+    jboolean operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jboolean *elts = (jboolean *)
@@ -483,7 +484,7 @@ template<> class JArray<jboolean> : public java::lang::Object {
 
 template<> class JArray<jbyte> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -515,7 +516,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jbyte>(int n) : java::lang::Object(env->get_vm_env()->NewByteArray(n)) {
+    JArray<jbyte>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewByteArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -528,7 +529,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         if (PyString_Check(sequence))
             memcpy(buf, PyString_AS_STRING(sequence), length);
         else
-            for (int i = 0; i < length; i++) {
+            for (Py_ssize_t i = 0; i < length; i++) {
                 PyObject *obj = PySequence_GetItem(sequence, i);
 
                 if (!obj)
@@ -563,7 +564,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -580,7 +581,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         jbyte *buf = (jbyte *) elts;
         PyObject *tuple = PyTuple_New(hi - lo);
         
-        for (int i = 0; i < hi - lo; i++)
+        for (Py_ssize_t i = 0; i < hi - lo; i++)
             PyTuple_SET_ITEM(tuple, i, PyInt_FromLong(buf[lo + i]));
 
         return tuple;
@@ -597,7 +598,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         return PyString_FromStringAndSize((char *) buf, length);
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -615,7 +616,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -642,7 +643,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jbyte operator[](int n) {
+    jbyte operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jbyte *elts = (jbyte *)
@@ -657,7 +658,7 @@ template<> class JArray<jbyte> : public java::lang::Object {
 
 template<> class JArray<jchar> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -689,7 +690,7 @@ template<> class JArray<jchar> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jchar>(int n) : java::lang::Object(env->get_vm_env()->NewCharArray(n)) {
+    JArray<jchar>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewCharArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -707,12 +708,12 @@ template<> class JArray<jchar> : public java::lang::Object {
             else
             {
                 Py_UNICODE *pchars = PyUnicode_AS_UNICODE(sequence);
-                for (int i = 0; i < length; i++)
+                for (Py_ssize_t i = 0; i < length; i++)
                     buf[i] = (jchar) pchars[i];
             }
         }
         else
-            for (int i = 0; i < length; i++) {
+            for (Py_ssize_t i = 0; i < length; i++) {
                 PyObject *obj = PySequence_GetItem(sequence, i);
 
                 if (!obj)
@@ -737,7 +738,7 @@ template<> class JArray<jchar> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -761,14 +762,14 @@ template<> class JArray<jchar> : public java::lang::Object {
             PyObject *string = PyUnicode_FromUnicode(NULL, hi - lo);
             Py_UNICODE *pchars = PyUnicode_AS_UNICODE(string);
 
-            for (int i = lo; i < hi; i++)
+            for (Py_ssize_t i = lo; i < hi; i++)
                 pchars[i - lo] = (Py_UNICODE) buf[i];
 
             return string;
         }
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -797,7 +798,7 @@ template<> class JArray<jchar> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -829,7 +830,7 @@ template<> class JArray<jchar> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jchar operator[](int n) {
+    jchar operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jchar *elts = (jchar *)
@@ -844,7 +845,7 @@ template<> class JArray<jchar> : public java::lang::Object {
 
 template<> class JArray<jdouble> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -876,7 +877,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jdouble>(int n) : java::lang::Object(env->get_vm_env()->NewDoubleArray(n)) {
+    JArray<jdouble>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewDoubleArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -886,7 +887,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
         arrayElements elts = elements();
         jdouble *buf = (jdouble *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -911,7 +912,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -928,13 +929,13 @@ template<> class JArray<jdouble> : public java::lang::Object {
         arrayElements elts = elements();
         jdouble *buf = (jdouble *) elts;
 
-        for (int i = lo; i < hi; i++)
+        for (Py_ssize_t i = lo; i < hi; i++)
             PyList_SET_ITEM(list, i - lo, PyFloat_FromDouble((double) buf[i]));
 
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -949,7 +950,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -976,7 +977,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jdouble operator[](int n) {
+    jdouble operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jdouble *elts = (jdouble *)
@@ -991,7 +992,7 @@ template<> class JArray<jdouble> : public java::lang::Object {
 
 template<> class JArray<jfloat> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -1023,7 +1024,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jfloat>(int n) : java::lang::Object(env->get_vm_env()->NewFloatArray(n)) {
+    JArray<jfloat>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewFloatArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -1033,7 +1034,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
         arrayElements elts = elements();
         jfloat *buf = (jfloat *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -1058,7 +1059,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -1075,13 +1076,13 @@ template<> class JArray<jfloat> : public java::lang::Object {
         arrayElements elts = elements();
         jfloat *buf = (jfloat *) elts;
 
-        for (int i = lo; i < hi; i++)
+        for (Py_ssize_t i = lo; i < hi; i++)
             PyList_SET_ITEM(list, i - lo, PyFloat_FromDouble((double) buf[i]));
 
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -1096,7 +1097,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -1123,7 +1124,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jfloat operator[](int n) {
+    jfloat operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jfloat *elts = (jfloat *)
@@ -1138,7 +1139,7 @@ template<> class JArray<jfloat> : public java::lang::Object {
 
 template<> class JArray<jint> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -1170,7 +1171,7 @@ template<> class JArray<jint> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jint>(int n) : java::lang::Object(env->get_vm_env()->NewIntArray(n)) {
+    JArray<jint>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewIntArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -1180,7 +1181,7 @@ template<> class JArray<jint> : public java::lang::Object {
         arrayElements elts = elements();
         jint *buf = (jint *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -1205,7 +1206,7 @@ template<> class JArray<jint> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -1222,13 +1223,13 @@ template<> class JArray<jint> : public java::lang::Object {
         arrayElements elts = elements();
         jint *buf = (jint *) elts;
 
-        for (int i = lo; i < hi; i++)
+        for (Py_ssize_t i = lo; i < hi; i++)
             PyList_SET_ITEM(list, i - lo, PyInt_FromLong(buf[i]));
 
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -1243,7 +1244,7 @@ template<> class JArray<jint> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -1270,7 +1271,7 @@ template<> class JArray<jint> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jint operator[](int n) {
+    jint operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jint *elts = (jint *)
@@ -1285,7 +1286,7 @@ template<> class JArray<jint> : public java::lang::Object {
 
 template<> class JArray<jlong> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -1317,7 +1318,7 @@ template<> class JArray<jlong> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jlong>(int n) : java::lang::Object(env->get_vm_env()->NewLongArray(n)) {
+    JArray<jlong>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewLongArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -1327,7 +1328,7 @@ template<> class JArray<jlong> : public java::lang::Object {
         arrayElements elts = elements();
         jlong *buf = (jlong *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -1352,7 +1353,7 @@ template<> class JArray<jlong> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -1369,13 +1370,13 @@ template<> class JArray<jlong> : public java::lang::Object {
         arrayElements elts = elements();
         jlong *buf = (jlong *) elts;
 
-        for (int i = lo; i < hi; i++)
+        for (Py_ssize_t i = lo; i < hi; i++)
             PyList_SET_ITEM(list, i - lo, PyLong_FromLongLong((long long) buf[i]));
 
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -1390,7 +1391,7 @@ template<> class JArray<jlong> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -1432,7 +1433,7 @@ template<> class JArray<jlong> : public java::lang::Object {
 
 template<> class JArray<jshort> : public java::lang::Object {
   public:
-    int length;
+    Py_ssize_t length;
 
     class arrayElements {
     private:
@@ -1464,7 +1465,7 @@ template<> class JArray<jshort> : public java::lang::Object {
         length = obj.length;
     }
 
-    JArray<jshort>(int n) : java::lang::Object(env->get_vm_env()->NewShortArray(n)) {
+    JArray<jshort>(Py_ssize_t n) : java::lang::Object(env->get_vm_env()->NewShortArray(n)) {
         length = env->getArrayLength((jarray) this$);
     }
 
@@ -1474,7 +1475,7 @@ template<> class JArray<jshort> : public java::lang::Object {
         arrayElements elts = elements();
         jshort *buf = (jshort *) elts;
 
-        for (int i = 0; i < length; i++) {
+        for (Py_ssize_t i = 0; i < length; i++) {
             PyObject *obj = PySequence_GetItem(sequence, i);
 
             if (!obj)
@@ -1499,7 +1500,7 @@ template<> class JArray<jshort> : public java::lang::Object {
         return toSequence(0, length);
     }
 
-    PyObject *toSequence(int lo, int hi)
+    PyObject *toSequence(Py_ssize_t lo, Py_ssize_t hi)
     {
         if (this$ == NULL)
             Py_RETURN_NONE;
@@ -1516,13 +1517,13 @@ template<> class JArray<jshort> : public java::lang::Object {
         arrayElements elts = elements();
         jshort *buf = (jshort *) elts;
 
-        for (int i = lo; i < hi; i++)
+        for (Py_ssize_t i = lo; i < hi; i++)
             PyList_SET_ITEM(list, i - lo, PyInt_FromLong(buf[i]));
 
         return list;
     }
 
-    PyObject *get(int n)
+    PyObject *get(Py_ssize_t n)
     {
         if (this$ != NULL)
         {
@@ -1537,7 +1538,7 @@ template<> class JArray<jshort> : public java::lang::Object {
         return NULL;
     }
 
-    int set(int n, PyObject *obj)
+    int set(Py_ssize_t n, PyObject *obj)
     {
         if (this$ != NULL)
         {
@@ -1564,7 +1565,7 @@ template<> class JArray<jshort> : public java::lang::Object {
     PyObject *wrap() const;
 #endif
 
-    jshort operator[](int n) {
+    jshort operator[](Py_ssize_t n) {
         JNIEnv *vm_env = env->get_vm_env();
         jboolean isCopy = 0;
         jshort *elts = (jshort *)
