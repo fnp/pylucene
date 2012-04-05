@@ -108,6 +108,12 @@ LUCENE=$(LUCENE_SRC)/lucene
 #JCC=$(PYTHON) -m jcc --shared
 #NUM_FILES=4
 
+PREFIX_PYTHON=$(VIRTUAL_ENV)
+ANT=ant
+PYTHON=$(PREFIX_PYTHON)/bin/python
+JCC=$(PYTHON) -m jcc --shared
+NUM_FILES=3
+
 # FreeBSD
 #PREFIX_PYTHON=/usr
 #ANT=ant
@@ -151,6 +157,7 @@ JARS+=$(MEMORY_JAR)             # single-document memory index
 JARS+=$(HIGHLIGHTER_JAR)        # needs memory contrib
 JARS+=$(EXTENSIONS_JAR)         # needs highlighter contrib
 JARS+=$(QUERIES_JAR)            # regex and other contrib queries
+JARS+=$(STEMPEL_JAR)
 #JARS+=$(SMARTCN_JAR)            # smart chinese analyzer
 #JARS+=$(SPATIAL_JAR)            # spatial lucene
 JARS+=$(GROUPING_JAR)           # grouping module
@@ -178,6 +185,7 @@ MEMORY_JAR=$(LUCENE)/build/contrib/memory/lucene-memory-$(LUCENE_VER).jar
 QUERIES_JAR=$(LUCENE)/build/contrib/queries/lucene-queries-$(LUCENE_VER).jar
 EXTENSIONS_JAR=build/jar/extensions.jar
 SMARTCN_JAR=$(LUCENE)/build/contrib/analyzers/smartcn/lucene-smartcn-$(LUCENE_VER).jar
+STEMPEL_JAR=$(LUCENE)/build/contrib/analyzers/stempel/lucene-stempel-$(LUCENE_VER).jar
 SPATIAL_JAR=$(LUCENE)/build/contrib/spatial/lucene-spatial-$(LUCENE_VER).jar
 GROUPING_JAR=$(LUCENE)/build/contrib/grouping/lucene-grouping-$(LUCENE_VER).jar
 JOIN_JAR=$(LUCENE)/build/contrib/join/lucene-join-$(LUCENE_VER).jar
@@ -229,6 +237,9 @@ $(EXTENSIONS_JAR): $(LUCENE_JAR)
 
 $(SMARTCN_JAR): $(LUCENE_JAR)
 	cd $(LUCENE)/contrib/analyzers/smartcn; $(ANT) -Dversion=$(LUCENE_VER)
+
+$(STEMPEL_JAR): $(LUCENE_JAR)
+	cd $(LUCENE)/contrib/analyzers/stempel; $(ANT) -Dversion=$(LUCENE_VER)
 
 $(SPATIAL_JAR): $(LUCENE_JAR)
 	cd $(LUCENE)/contrib/spatial; $(ANT) -Dversion=$(LUCENE_VER)
